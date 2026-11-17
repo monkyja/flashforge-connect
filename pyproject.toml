@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orca-flashforge"
+version = "0.1.0"
+description = "Experimental FlashForge Creator 5 Pro integration for OrcaSlicer"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE", "THIRD_PARTY.md", "src/orca_flashforge/ui/vendor/HLS-LICENSE"]
+dependencies = []
+
+[project.scripts]
+orca-flashforge = "orca_flashforge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+orca_flashforge = ["ui/*.html", "ui/*.svg", "ui/vendor/*.js", "ui/vendor/HLS-LICENSE"]

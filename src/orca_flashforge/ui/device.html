@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FlashForge para OrcaSlicer</title>
+<style>
+:root{color-scheme:dark;--bg:var(--orca-bg,#242428);--panel:var(--orca-panel,#303035);--border:var(--orca-border,#49494f);--fg:var(--orca-fg,#ededee);--muted:var(--orca-muted,#a9abb1);--accent:var(--orca-accent,#00a997)}
+@media(prefers-color-scheme:light){:root{color-scheme:light;--bg:var(--orca-bg,#f3f3f3);--panel:var(--orca-panel,#fff);--border:var(--orca-border,#d1d1d1);--fg:var(--orca-fg,#272727);--muted:var(--orca-muted,#666);--accent:var(--orca-accent,#008d7e)}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px system-ui,sans-serif}
+main{max-width:1120px;margin:auto;padding:28px}h1{font-size:24px;margin:0}h2{font-size:17px;margin:0 0 14px}
+p{line-height:1.5}.muted{color:var(--muted)}.header{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:24px}
+.tag{border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:12px;color:var(--accent)}
+.layout{display:grid;grid-template-columns:330px 1fr;gap:20px}.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px}
+label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}input,select,button{font:inherit;border-radius:6px;border:1px solid var(--border);padding:9px 10px}
+input,select{width:100%;background:var(--bg);color:var(--fg)}button{background:var(--accent);color:#122922;cursor:pointer;font-weight:600}
+button.quiet{background:transparent;color:var(--fg)}button:disabled{opacity:.45;cursor:wait}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.temperature-groups{display:grid;gap:20px}.temperature-heading{font-size:12px;font-weight:600;color:var(--muted);margin:0 0 10px}.temperature-grid{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr))}.temperature-grid.environment{grid-template-columns:repeat(2,minmax(0,1fr))}.temperature{min-width:0;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:14px}.temperature-name{font-size:13px;color:var(--muted)}.temperature-current{display:flex;align-items:baseline;gap:5px;margin:9px 0 12px;font-variant-numeric:tabular-nums}.temperature-current b{font-size:26px;line-height:1;font-weight:650}.temperature-current span{font-size:13px;color:var(--muted)}.temperature-target{display:flex;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}.temperature-target span:last-child{white-space:nowrap}.refresh-status{align-items:center}.refresh-status small{display:block;margin-top:3px}
+.temperature.has-filament{border-top:3px solid var(--filament-color,var(--border));padding-top:12px}.nozzle-material{display:flex;align-items:center;gap:8px;margin:14px 0}.nozzle-material .swatch{width:20px;height:20px;flex-shrink:0}.nozzle-material-copy{min-width:0;overflow-wrap:anywhere}.nozzle-material strong{display:block;font-size:13px;font-weight:600}.nozzle-material small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.nozzle-material.empty{color:var(--muted)}.nozzle-material.empty .swatch{background:transparent;border-style:dashed;opacity:.55}.filament-overview{margin-top:20px}.filament-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.filament-grid .slot{padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);min-width:0}.filament-grid .slot span:last-child{overflow-wrap:anywhere}.swatch{flex-shrink:0}
+progress{width:100%;height:14px;accent-color:var(--accent)}.job{font-weight:600;overflow-wrap:anywhere}.slot{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.swatch{width:22px;height:22px;border-radius:50%;border:1px solid #8c97a6;background:#6a7280}.camera{width:100%;min-height:100px;object-fit:contain;background:var(--bg);border:0;border-radius:6px}iframe.camera{height:300px}
+[hidden]{display:none!important}#notice{padding:12px 15px;background:#292f3a;border-left:3px solid var(--accent);border-radius:4px;min-height:44px;margin-bottom:20px}
+.error{border-left-color:#ff8989!important}small{font-size:12px}.statusline{display:flex;justify-content:space-between;gap:10px}.warning{color:#ffd38d}
+.brand{width:44px;height:44px;border-radius:10px;object-fit:contain}.identity{display:flex;align-items:center;gap:12px}.identity p{margin:4px 0}.account-card{border-top:3px solid var(--accent)}.account-name{font-weight:650;overflow-wrap:anywhere}.avatar{width:42px;height:42px;border-radius:50%;object-fit:cover}.printer-choice{width:100%;text-align:left;display:flex;gap:12px;align-items:center;background:var(--bg);color:var(--fg);margin-top:10px;font-weight:400}.printer-choice[aria-pressed=true]{border-color:var(--accent)}.printer-choice img{width:38px;height:38px;object-fit:contain}.printer-choice small{display:block;color:var(--muted);margin-top:4px}.check{display:flex;align-items:start;gap:9px;line-height:1.5}.check input{width:auto;margin-top:4px}.mapping-row{display:grid;grid-template-columns:80px 1fr 140px;align-items:center;gap:10px;margin-top:10px}.review{border-color:var(--accent)}dl{display:grid;grid-template-columns:100px 1fr;gap:8px}dt{color:var(--muted)}dd{margin:0;overflow-wrap:anywhere}details>summary{cursor:pointer;color:var(--muted)}#account-state{color:var(--accent);font-size:12px}
+.mapping-row select,.mapping-row input{min-width:0}.printer-choice span{min-width:0;overflow-wrap:anywhere}
+@media(max-width:760px){main{padding:16px}.layout{grid-template-columns:1fr}.header{align-items:start}.mapping-row{grid-template-columns:80px 1fr}.mapping-row input{grid-column:2}}
+@media(max-width:1000px){.temperature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+main{max-width:none;width:100%;padding:24px 32px}.layout{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;grid-template-areas:"account account" "status print" "nozzles print" "review review" "transfer transfer" "camera movement" "recordings settings" "profile profile";gap:16px}.layout>aside,.layout>div{display:contents}.layout .card{margin:0;min-width:0}.account-card{grid-area:account;border-top:1px solid var(--border);display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 20px}.account-card .identity{margin:0!important}.account-card .brand,.account-card .avatar{width:32px;height:32px}.account-card .buttons{margin:0}.account-card #session-storage-note{order:5;flex-basis:100%;margin:0}.account-card label[for=devices]{margin:0 0 0 auto}.account-card #devices{width:min(260px,100%)}.account-card #printer-cards{display:none}.account-card #login-fields{display:flex;align-items:end;gap:8px;flex-wrap:wrap}.account-card #login-fields input:not([type=checkbox]){width:180px}.account-card #login-fields label{margin:0}.settings-card{grid-area:settings}.profile-card{grid-area:profile}.status-card{grid-area:status}.print-card{grid-area:print}.nozzles-card{grid-area:nozzles}.review{grid-area:review}.transfer-card{grid-area:transfer}.camera-card{grid-area:camera}.movement-card{grid-area:movement}.recordings-card{grid-area:recordings}.secondary{padding:14px 18px}.secondary h2{font-size:14px}.plate-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:16px 0}.plate-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--bg)}.plate-preview{height:160px;background:repeating-linear-gradient(0deg,transparent 0 19px,var(--border) 20px),repeating-linear-gradient(90deg,transparent 0 19px,var(--border) 20px);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px}.plate-preview img{width:100%;height:100%;object-fit:contain}.plate-content{padding:14px}.plate-content h3{margin:0 0 10px}.plate-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}.plate-filaments{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}.plate-filaments .swatch{width:16px;height:16px}.plate-card button{width:100%}.mapping-row{display:grid;grid-template-columns:minmax(180px,1fr) minmax(180px,1fr) minmax(140px,.7fr);border:1px solid var(--border);border-radius:10px;padding:16px;background:var(--bg)}.mapping-row .check{grid-column:1/-1}.mapping-filament{display:flex;align-items:center;gap:10px;font-weight:600}.mapping-filament .swatch{width:30px;height:30px}.mapping-row select,.mapping-row input{width:100%}.tag{color:var(--muted)}.subtle{font-size:12px;color:var(--muted)}
+@media(max-width:900px){main{padding:16px}.layout{grid-template-columns:1fr;grid-template-areas:"account" "print" "status" "nozzles" "review" "transfer" "camera" "movement" "recordings" "settings" "profile"}.account-card label[for=devices]{margin:0}.mapping-row{grid-template-columns:1fr}.mapping-row .check{grid-column:auto}}
+
+:root{--bg:#434649;--panel:#303235;--border:#555a5d;--fg:#f2f3f4;--muted:#bdc1c3;--accent:#00a997;color-scheme:dark}.layout{grid-template-areas:"account account" "print print" "status nozzles" "review review" "transfer transfer" "history calibration" "info recordings"}.calibration-card{grid-area:calibration}.printer-illustration{height:225px;display:flex;align-items:center;justify-content:center;background:#262a2b;border-radius:8px}.printer-illustration svg{height:100%;max-width:100%}.camera-card h3{font-size:14px;margin-top:22px}.temperature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.movement-pad{display:grid;grid-template-columns:repeat(3,60px);gap:5px;align-items:center;text-align:center}.movement-pad button{padding:10px 5px}.axis-center{color:var(--muted)}
+@media(max-width:900px){.layout{grid-template-areas:"account" "print" "status" "nozzles" "review" "transfer" "history" "calibration" "info" "recordings"}}
+
+.review-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:24px}.review-dialog{width:min(1080px,100%);max-height:92vh;overflow:auto;background:var(--panel);border:1px solid var(--border);border-radius:14px;box-shadow:0 24px 80px #0009}.review-header,.review-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:20px 24px}.review-header{border-bottom:1px solid var(--border)}.review-header h2{margin:0;font-size:20px}.review-kicker{font-size:11px;letter-spacing:.08em;color:var(--accent);margin:0 0 7px}.review-body{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(320px,1.2fr);gap:24px;padding:24px}.review-preview{min-width:0}.review-image{height:230px;border-radius:9px;background:#242728;display:flex;justify-content:center;align-items:center;color:var(--muted)}.review-image img{width:100%;height:100%;object-fit:contain}.review-summary{display:grid;grid-template-columns:90px 1fr;gap:8px;font-size:13px}.review-summary span{color:var(--muted)}.review-materials h3{margin:0}.review-materials p{font-size:13px}.station-flag{font-size:12px}.mapping-row{grid-template-columns:minmax(0,1fr);gap:10px;margin:10px 0;padding:14px}.mapping-row .check{grid-column:auto;margin:0;justify-content:flex-start}.mapping-filament{align-items:center;gap:12px}.mapping-filament .swatch{width:42px;height:42px}.mapping-copy small{display:block;color:var(--muted);font-weight:400;margin-top:3px}.mapping-row input:not([type=checkbox]){max-width:150px}.review-options{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px}.final-confirm{border-top:1px solid var(--border);padding-top:16px}.review-footer{border-top:1px solid var(--border)}@media(max-width:700px){.review-body{grid-template-columns:1fr}.review-image{height:160px}.review-footer{flex-wrap:wrap}}
+
+.icon-button{display:inline-flex;align-items:center;gap:8px}.icon-button svg,.option-card svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}.review-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.option-card{align-items:center;margin:0;padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--fg);cursor:pointer}.option-card:has(input:checked){border-color:var(--accent)}.option-card small{display:block;color:var(--muted);margin-top:3px}.option-card input{margin:0}.option-card svg{color:var(--accent)}@media(max-width:700px){.review-options{grid-template-columns:1fr}}
+
+.plate-grid{grid-template-columns:repeat(auto-fill,minmax(230px,300px));justify-content:start}.slot-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}.slot-choice{background:var(--panel);color:var(--fg);text-align:left;display:flex;align-items:center;gap:8px;min-width:0;padding:10px;font-size:12px;font-weight:600}.slot-choice[aria-pressed=true]{border:2px solid var(--accent);padding:9px;background:#16413b}.slot-choice .swatch{width:24px;height:24px}.slot-choice small{display:block;color:var(--muted);font-weight:400;margin-top:3px;overflow-wrap:anywhere}
+
+.filament-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+
+#notice{position:fixed;z-index:2000;top:20px;right:24px;max-width:min(440px,calc(100vw - 32px));margin:0;padding:14px 18px;background:#252b2d;border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:9px;box-shadow:0 12px 35px #0008;min-height:0}body.signed-out main{min-height:100vh;display:flex;align-items:center;justify-content:center}body.signed-out .header,body.signed-out .layout .card:not(#account),body.signed-out .review-overlay{display:none!important}body.signed-out .layout{display:block;width:min(440px,100%)}body.signed-out .account-card{display:block;padding:32px;border-radius:16px}body.signed-out .account-card>.identity{margin-bottom:24px!important}body.signed-out .account-card .brand{width:48px;height:48px}body.signed-out .account-card #login-fields{display:block}body.signed-out .account-card #login-fields input:not([type=checkbox]){width:100%}body.signed-out .account-card #login-fields label{margin:14px 0 7px}body.signed-out .account-card .buttons{margin-top:22px;display:grid}body.signed-out .account-card label[for=devices],body.signed-out #devices,body.signed-out #devices-refresh,body.signed-out #disconnect{display:none!important}.transfer-inline{margin:20px 0;padding:16px;border:1px solid var(--accent);border-radius:9px;background:var(--bg)}.transfer-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.transfer-heading p{margin:5px 0}.transfer-heading img{width:70px;height:55px;object-fit:contain;border-radius:6px;background:var(--panel)}
+
+.machine-info{grid-area:info}.print-history{grid-area:history}.camera-stage{display:flex;gap:12px;align-items:stretch}.camera-display{flex:1;min-width:0}.camera-tools{width:128px;display:flex;flex-direction:column;gap:8px}.camera-tools button{justify-content:flex-start}.current-job{display:flex;align-items:center;gap:16px}.job-art{position:relative;width:110px;height:110px;background:#222728;border-radius:9px;overflow:hidden;flex:none}.job-art img{width:100%;height:100%;object-fit:contain}.job-art>img{filter:grayscale(1);opacity:.35}.job-art-fill{position:absolute;inset:0;clip-path:inset(100% 0 0 0)}.cancel-print{color:#ffaaaa!important;border-color:#a85c5c}.cancel-print:disabled{opacity:.4}@media(max-width:550px){.camera-stage{flex-direction:column}.camera-tools{width:100%;flex-direction:row;flex-wrap:wrap}}
+
+.camera-tools{width:46px}.camera-tools button{width:46px;height:46px;padding:12px;justify-content:center}.camera-tools button span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}@media(max-width:550px){.camera-tools{width:100%}}
+
+h1,h2,h3,h4,.job,.machine-info dt,.machine-info dd{color:#f2f3f4}.machine-metrics{grid-template-columns:minmax(130px,1fr) minmax(100px,1fr);gap:10px;margin:0}.machine-metrics dt{color:#bdc1c3}.machine-metrics dd{margin:0}.camera-tools button[aria-pressed="true"]{background:#147e70;border-color:#7cd7c9;color:#fff}
+
+.stored-files{display:grid;gap:8px;margin-top:12px}.stored-file{display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px}.stored-file img{width:58px;height:58px;object-fit:contain;border-radius:5px}.stored-copy{min-width:0;flex:1}.stored-copy strong{display:block;overflow-wrap:anywhere}.stored-copy small{display:block;color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body class="signed-out">
+<main>
+<div class="header"><div class="identity"><img class="brand" src="__FLASHFORGE_ICON__" alt="FlashForge"><div><h1>FlashForge</h1><p class="muted">Cuenta, impresoras e impresión directa</p></div></div><span class="tag">Plugin no oficial · v__PLUGIN_VERSION__ · experimental</span></div>
+<div id="notice" role="status" aria-live="polite" hidden></div>
+<div class="layout">
+<aside>
+<section id="account" class="card account-card"><div class="identity"><img class="brand" src="__FLASHFORGE_ICON__" alt=""><div><h2 style="margin-bottom:4px">Cuenta FlashForge</h2><span id="account-state">Sin conectar</span></div></div>
+<div id="signed-in" hidden><div class="identity" style="margin-top:18px"><img id="avatar" class="avatar" src="__FLASHFORGE_ICON__" alt="Avatar de la cuenta"><div><div id="account-name" class="account-name"></div><small id="account-email" class="muted"></small></div></div></div>
+<div id="login-fields">
+<label for="username">Usuario o correo</label><input id="username" autocomplete="username">
+<label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password">
+<label class="check"><input id="remember-account" type="checkbox" checked>Recordar cuenta en este equipo</label>
+</div>
+<div class="buttons"><button id="login">Conectar</button><button id="restore-login" class="quiet">Recuperar cuenta guardada</button><button id="disconnect" class="quiet">Salir y olvidar cuenta</button></div>
+
+<label for="devices">Impresora de tu cuenta</label><select id="devices"><option value="">Conecta para cargar tus impresoras</option></select>
+<div class="buttons"><button id="devices-refresh" class="quiet">Actualizar lista</button></div>
+<div id="printer-cards"></div>
+</section>
+
+</aside>
+<div>
+<section class="card status-card">
+<div class="statusline"><h2 id="name">Creator 5 Pro</h2><span id="state" class="muted">Sin datos</span></div>
+<div id="active-job" hidden><div class="current-job"><div id="job-art" class="job-art" hidden><img id="job-art-muted" alt="Vista del trabajo"><div id="job-art-fill" class="job-art-fill"><img id="job-art-color" alt=""></div></div><div><p id="file" class="job">Consulta el estado de la impresora.</p><button id="cancel-print" class="quiet cancel-print" disabled>Cancelar impresión</button></div></div>
+<progress id="progress" max="100" value="0" aria-label="Progreso"></progress>
+<div class="statusline muted"><span id="job-progress">—</span><span id="layers">Capas: —</span></div></div>
+
+<small id="last-update" class="muted" role="status"></small><div id="transfer" class="transfer-inline" hidden><div class="transfer-heading"><div><strong>Envío del trabajo</strong><p id="transfer-name" class="muted"></p></div><img id="transfer-thumb" alt="Vista previa del trabajo" hidden></div><p id="transfer-state" role="status">Preparando la conexión…</p><progress id="transfer-progress" max="100" value="0" aria-label="Progreso de subida"></progress><div class="buttons"><button id="cancel-upload" class="quiet" disabled>Cancelar subida</button></div></div><section class="camera-card"><h3>Cámara</h3><div class="camera-stage"><div class="camera-display"><div id="printer-illustration" class="printer-illustration"><svg viewBox="0 0 260 220" role="img" aria-label="Ilustración de impresora 3D"><rect x="48" y="26" width="164" height="171" rx="12" fill="#393e40" stroke="#8b9997" stroke-width="5"/><path d="M60 39h140v108H60z" fill="#22292a" stroke="#667a77" stroke-width="3"/><path d="M70 53h120M90 53v67m80-67v67M72 125h116" fill="none" stroke="#92aaa5" stroke-width="4"/><path d="M109 83h42v25h-42z" fill="#647b77"/><path d="M130 108v13" stroke="#d2deda" stroke-width="4"/><path d="M71 143h118v11H71z" fill="#00a997"/><rect x="64" y="162" width="28" height="17" rx="3" fill="#171d1e"/><circle cx="183" cy="171" r="8" fill="#00a997"/></svg></div><iframe id="video" class="camera" title="Cámara de la impresora" sandbox="allow-scripts allow-same-origin" hidden></iframe><img id="camera" class="camera" alt="Cámara de la impresora" hidden>
+</div><div class="camera-tools"><button id="camera-toggle" class="quiet icon-button" aria-label="Ver vídeo" title="Ver vídeo" aria-pressed="false" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h12v12H3zM15 10l6-3v10l-6-3z"/></svg><span>Vídeo</span></button><button id="light-toggle" class="quiet icon-button" aria-label="Luz" title="Luz" disabled aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M9 21h6M8 14a6 6 0 1 1 8 0c-1 .8-1 1.5-1 2H9c0-.5 0-1.2-1-2z"/></svg><span id="light-label">Luz</span></button></div></div><p id="camera-note" class="muted">La disponibilidad y el formato dependen del firmware y la conexión.</p><span id="light-state" class="muted">Luz: estado desconocido</span>
+</section>
+</section>
+
+<section class="card secondary recordings-card"><h2>Grabaciones de la impresora</h2><p class="muted">Últimos vídeos timelapse disponibles para la impresora seleccionada.</p><button id="load-recordings" class="quiet">Consultar grabaciones</button><div id="recordings-list" aria-live="polite"></div></section>
+<section class="card secondary calibration-card"><h2>Calibraciones</h2><p id="calibration-note" class="muted">Selecciona una calibración para preparar el siguiente trabajo.</p><div class="buttons"><button id="calibrate-bed" class="quiet">Preparar nivelación</button><button id="calibrate-flow" class="quiet" disabled>Preparar calibración de flujo</button></div></section><section class="card secondary machine-info"><h2>Información de la máquina</h2><dl class="machine-metrics"><dt>Modelo</dt><dd id="machine-model">—</dd><dt>Firmware</dt><dd id="firmware">—</dd><dt>Horas impresas</dt><dd id="machine-hours">—</dd><dt>Filamento acumulado</dt><dd id="machine-filament">—</dd><dt>Almacenamiento libre</dt><dd id="machine-storage">—</dd><dt>Volumen de impresión</dt><dd id="machine-volume">—</dd></dl></section><section class="card secondary print-history"><h2>Archivos guardados en la impresora</h2><p class="muted">Archivos disponibles en la máquina; no es un historial completo de trabajos terminados.</p><button id="load-stored" class="quiet">Actualizar archivos</button><div id="stored-files" class="stored-files" aria-live="polite"></div></section>
+<section id="print-panel" class="card print-card"><h2>Imprimir en la seleccionada</h2><p id="exported-name" class="muted">Lamina las placas en OrcaSlicer y selecciónalas aquí.</p><div id="plate-cards" class="plate-grid"></div><label for="sliced-plates" hidden>Placa laminada</label><select id="sliced-plates" hidden><option value="">Lamina una placa para seleccionarla</option></select></section>
+<section id="review" class="review-overlay" role="dialog" aria-modal="true" aria-labelledby="review-title" hidden><div class="review-dialog"><header class="review-header"><div><p class="review-kicker">FLASHFORGE · PREPARAR TRABAJO</p><h2 id="review-title">Revisar impresión</h2></div><button id="close-review" class="quiet" aria-label="Cerrar revisión">✕</button></header><div class="review-body"><aside class="review-preview"><div id="review-image" class="review-image">Vista previa no disponible</div><h3><span id="review-label">Placa </span><span id="review-plate"></span></h3><p id="review-file" class="muted"></p><div class="review-summary"><span>Impresora</span><strong id="review-device"></strong><span>Modelo</span><strong id="review-model"></strong><span>Perfil</span><strong id="review-profile"></strong></div><p id="thumbnail-note" class="muted subtle"></p></aside><div class="review-materials"><h3>Filamentos del laminado</h3><p class="muted">Selecciona una ranura LFS para cada filamento. La asignación inicial se puede cambiar.</p><div id="material-mapping" hidden><div id="mapping-rows"></div></div><p id="independent-note" class="muted"><small>No se recibieron ranuras LFS. Actualiza la impresora y vuelve a revisar.</small></p><div class="review-options"><label class="check option-card"><input id="bed-leveling" type="checkbox"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18h18M5 14l3-3 3 3M8 11V5M13 8h7M13 12h7"/></svg><span><strong>Nivelación</strong><small>Antes de imprimir</small></span></label><label id="flow-option" class="check option-card" hidden><input id="flow-calibration" type="checkbox"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg><span><strong>Calibración de flujo</strong><small>Antes de imprimir · LiDAR</small></span></label><label class="check option-card"><input id="timelapse" type="checkbox"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h12v10H3zM15 10l6-3v10l-6-3z"/></svg><span><strong>Timelapse</strong><small>Grabar durante el trabajo</small></span></label></div></div></div><footer class="review-footer"><span class="muted">Comprueba que la cama esté preparada.</span><button id="commit-print" disabled>Enviar e imprimir</button></footer></div></section>
+
+<section class="card nozzles-card" id="nozzles-panel"><h2>Boquillas y filamentos</h2><p class="muted nozzle-info">Modelo de boquilla: <span id="machine-nozzles">—</span></p><div id="temperatures" class="temperature-groups"><span class="muted">Sin datos recibidos.</span></div><section id="unlinked-filaments" class="filament-overview" hidden><h3 class="temperature-heading">Filamentos LFS</h3><div id="slots" class="filament-grid"></div></section></section>
+
+
+</div>
+</div>
+</main>
+<script>
+(function(){
+  'use strict';
+  var $=function(id){return document.getElementById(id);};
+  var busy=false, cameraUrl='', selected='', cameraPlayerUrl='', cameraGeneration=0, cameraPending=-1, cameraAwaiting=false, cameraActive=false, cameraFallback=false, calibrationPreset='';
+  var pollingMode=null, statusTimer=null;
+  var statusRequest=null, nextStatusRequest=0, statusGeneration=0, pendingAction=null;
+  var statusSession=Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+  var configLoaded=false, restoring=false, statusProtocol=0;
+  var account=null,devices=[],profile={},bindings={},job=null,lastStatus=null,platesSlicing=false,plateDetails={},previewTimer=null,previewAttempt='',noticeTimer=null,transferActive=false,sentJob=null,submittedPreview='',storedRequested='';
+
+  function notice(message,error){clearTimeout(noticeTimer);$('notice').textContent=message;$('notice').classList.toggle('error',!!error);$('notice').hidden=false;noticeTimer=setTimeout(function(){$('notice').hidden=true;},error?10000:5000);}
+  function controls(){$('commit-print').disabled=busy||!job||!job.tools.length||job.tools.some(function(tool){var row=document.querySelector('.mapping-row[data-tool="'+tool+'"]');return !row||row.dataset.slot===undefined;});$('cancel-print').disabled=busy||!lastStatus||!lastStatus.job_id||!['printing','pause','pausing','heating'].includes(String(lastStatus.status||'').toLowerCase());document.querySelectorAll('.stored-repeat').forEach(function(button){button.disabled=busy||button.dataset.repeatable!=='true'||!!(lastStatus&&['printing','pause','pausing','heating','canceling','busy'].includes(String(lastStatus.status||'').toLowerCase()));});$('devices').disabled=busy;$('camera-toggle').disabled=busy||!account||!selected;$('light-toggle').disabled=busy||!account||!selected||!lastStatus||!['open','close'].includes(lastStatus.light_status);document.querySelectorAll('.plate-print').forEach(function(button){button.disabled=busy||platesSlicing||!account||!selected;});}
+  function renderPlates(plates,slicing,preferred){platesSlicing=!!slicing;var select=$('sliced-plates'),previous=select.value;select.replaceChildren();var blank=document.createElement('option');blank.value='';blank.textContent=platesSlicing?'Laminando…':'Selecciona una placa laminada';select.append(blank);(plates||[]).forEach(function(plate){var option=document.createElement('option');option.value=String(plate);option.textContent='Placa '+plate;select.append(option);});var choice=previous&&plates.includes(Number(previous))?previous:(plates.includes(Number(preferred))?String(preferred):(plates.length===1?String(plates[0]):''));select.value=choice;$('exported-name').textContent=platesSlicing?'Esperando a que termine el laminado.':plates.length?'Selecciona la placa y revisa sus materiales.':'Lamina una placa en OrcaSlicer para seleccionarla aquí.';renderPlateCards(plates);controls();schedulePreviews(plates,slicing);}
+  function schedulePreviews(plates,slicing){clearTimeout(previewTimer);if(slicing||!plates.length)return;var signature=plates.join(',');if(signature===previewAttempt||plates.every(function(p){return plateDetails[p]&&plateDetails[p].thumbnail;}))return;previewTimer=setTimeout(function(){previewAttempt=signature;window.orca.postMessage({command:'generate_previews'});},1800);}
+  function renderPlateCards(plates){var container=$('plate-cards');container.replaceChildren();plates.forEach(function(plate){var detail=plateDetails[plate]||{},card=document.createElement('article');card.className='plate-card';var preview=document.createElement('div');preview.className='plate-preview';if(detail.thumbnail){var img=document.createElement('img');img.src=detail.thumbnail;img.alt='Vista previa de la placa '+plate;preview.append(img);}else preview.textContent='Vista previa no disponible';var content=document.createElement('div');content.className='plate-content';var title=document.createElement('h3');title.textContent='Placa '+plate;var meta=document.createElement('div');meta.className='plate-meta';var time=document.createElement('span');time.textContent=detail.time?'Tiempo · '+detail.time:'Tiempo no disponible';var weight=document.createElement('span');weight.textContent=detail.weight?'Filamento · '+detail.weight+' g':'Consumo no disponible';meta.append(time,weight);var filaments=document.createElement('div');filaments.className='plate-filaments';(detail.filaments||[]).forEach(function(f){var swatch=document.createElement('span');swatch.className='swatch';var color=filamentColor(f.color);if(color)swatch.style.backgroundColor=color;swatch.title='Filamento '+(f.tool+1)+(f.material?' · '+f.material:'');var chip=document.createElement('span');chip.className='filament-chip';var info=document.createElement('span');var usage=[];if(f.weight)usage.push(f.weight+' g');if(f.length_mm)usage.push((Number(f.length_mm)/1000).toFixed(2)+' m');info.textContent=(f.material||'Filamento '+(f.tool+1))+(usage.length?' · '+usage.join(' · '):'');chip.append(swatch,info);filaments.append(chip);});if(!(detail.filaments||[]).length){var missing=document.createElement('small');missing.className='muted';missing.textContent='Filamentos no disponibles';filaments.append(missing);}var button=document.createElement('button');button.className='plate-print';button.textContent='Imprimir placa';button.disabled=busy||platesSlicing||!account||!selected;button.onclick=function(){$('sliced-plates').value=String(plate);invalidate();send('prepare_print',{device_id:selected,plate:plate});};content.append(title,meta,filaments,button);card.append(preview,content);container.append(card);});}
+  function send(command,values){if(busy){notice('Hay una operación en curso.');return false;}busy=true;controls();var action=Object.assign({command:command},values||{});if(statusRequest){pendingAction=action;}else{window.orca.postMessage(action);}return true;}
+
+  function invalidate(){if(pendingAction&&(pendingAction.command==='prepare_print'||pendingAction.command==='commit_print')){pendingAction=null;busy=false;}job=null;$('review').hidden=true;controls();}
+  function clearDeviceStatus(){storedRequested='';sentJob=null;submittedPreview='';transferActive=false;$('transfer').hidden=true;lastStatus=null;cameraAwaiting=false;clearCamera();cameraUrl='';$('camera-toggle').disabled=true;$('name').textContent='Selecciona o actualiza la impresora';$('state').textContent='Sin datos';$('file').textContent='Actualiza el estado del dispositivo seleccionado.';$('progress').value=0;$('job-progress').textContent='—';$('layers').textContent='Capas: —';$('firmware').textContent='—';['machine-model','machine-hours','machine-filament','machine-storage','machine-nozzles','machine-volume'].forEach(function(id){$(id).textContent='—';});$('temperatures').textContent='Sin datos recibidos.';$('slots').replaceChildren();$('unlinked-filaments').hidden=true;$('last-update').textContent='Esperando primera lectura';}
+  function renderAccount(value){account=value||null;document.body.classList.toggle('signed-out',!account);$('disconnect').hidden=!account;$('signed-in').hidden=!account;$('login-fields').hidden=!!account;$('login').hidden=!!account;$('restore-login').hidden=!!account;$('account-state').textContent=account?'Conectada':'Sin conectar';$('account-name').textContent=account?(account.nickname||'Cuenta FlashForge'):'';$('account-email').textContent=account?(account.email||''):'';$('avatar').src=account&&account.avatar_url?account.avatar_url:'__FLASHFORGE_ICON__';controls();}
+  $('avatar').onerror=function(){this.onerror=null;this.src='__FLASHFORGE_ICON__';};
+
+  function renderPrinters(){
+    $('devices').replaceChildren();$('printer-cards').replaceChildren();var blank=document.createElement('option');blank.value='';blank.textContent=devices.length?'Selecciona una impresora':'Conecta para cargar tus impresoras';$('devices').append(blank);
+    devices.forEach(function(device){var option=document.createElement('option');option.value=device.devId;option.textContent=device.name+' · '+device.model+' · '+device.status;$('devices').append(option);var card=document.createElement('button');card.type='button';card.className='printer-choice';card.setAttribute('aria-pressed',String(device.devId===selected));card.disabled=busy;var image=document.createElement('img');image.src=device.image_url||'__FLASHFORGE_ICON__';image.alt='';image.onerror=function(){this.onerror=null;this.src='__FLASHFORGE_ICON__';};var label=document.createElement('span');label.textContent=device.name;var detail=document.createElement('small');detail.textContent=device.model+' · '+device.status;label.append(detail);card.append(image,label);card.onclick=function(){selectPrinter(device.devId);};$('printer-cards').append(card);});$('devices').value=selected;controls();
+  }
+  function updatePrinterStatus(){
+    devices.forEach(function(device,index){
+      if(device.devId!==selected)return;
+      device.status=lastStatus.status;
+      var option=$('devices').options[index+1];if(option)option.textContent=device.name+' · '+device.model+' · '+device.status;
+      var card=$('printer-cards').children[index];if(card)card.querySelector('small').textContent=device.model+' · '+device.status;
+    });
+  }
+  function selectPrinter(id){if(busy)return;statusGeneration++;selected=id;storedRequested='';$('stored-files').replaceChildren();$('recordings-list').replaceChildren();clearDeviceStatus();invalidate();renderPrinters();if(id){send('select',{device_id:id});scheduleStoredFiles(id,0);}}
+  function scheduleStoredFiles(id,attempt){if(!id||!account||selected!==id||storedRequested===id)return;if(busy||statusRequest){if(attempt<20)setTimeout(function(){scheduleStoredFiles(id,attempt+1);},500);return;}storedRequested=id;send('stored_files',{device_id:id});}
+  function renderStoredFiles(files){var container=$('stored-files');container.replaceChildren();if(!files.length){container.textContent='La impresora no ha devuelto archivos guardados.';return;}files.forEach(function(file){var card=document.createElement('article');card.className='stored-file';if(file.thumbnail){var img=document.createElement('img');img.src=file.thumbnail;img.alt='';card.append(img);}var copy=document.createElement('div');copy.className='stored-copy';var name=document.createElement('strong');name.textContent=file.name;var meta=document.createElement('small');var info=[];if(typeof file.seconds==='number')info.push(Math.floor(file.seconds/3600)+' h '+Math.floor(file.seconds%3600/60)+' min');if(typeof file.weight==='number')info.push(file.weight.toFixed(1)+' g');meta.textContent=info.length?info.join(' · '):'Sin información del laminado';copy.append(name,meta);var button=document.createElement('button');button.className='quiet stored-repeat';button.dataset.repeatable=String(file.can_repeat);button.textContent='Repetir';button.disabled=!file.can_repeat||!!(lastStatus&&['printing','pause','pausing','heating','canceling','busy'].includes(String(lastStatus.status||'').toLowerCase()));button.title=file.can_repeat?'Revisar antes de imprimir':'El archivo no contiene información suficiente de filamentos';button.onclick=function(){invalidate();send('prepare_stored',{name:file.name,device_id:selected});};card.append(copy,button);container.append(card);});}
+  function review(value){
+    job=value;$('review').hidden=false;var preview={thumbnail:(job.automatic_plate||job.stored_file)?job.preview:''};var picture=$('review-image');picture.replaceChildren();if(preview.thumbnail){var photo=document.createElement('img');photo.src=preview.thumbnail;photo.alt='Vista previa de la placa '+job.plate;picture.append(photo);}else picture.textContent='Vista previa no disponible';$('review-file').textContent=job.name+(typeof job.size==='number'?' · '+(job.size/1024/1024).toFixed(2)+' MiB':'');
+    $('review-device').textContent=job.device.name;$('review-model').textContent=job.device.model;
+    $('review-profile').textContent=job.profile||'Sin perfil asociado al archivo';$('review-label').textContent=job.stored_file?'Archivo guardado':'Placa ';$('review-plate').textContent=job.stored_file?'':job.plate;
+    $('thumbnail-note').textContent=job.has_thumbnail?'Miniatura PNG recibida del laminado.':'Sin miniatura del laminado: se enviará una imagen neutra.';
+        $('bed-leveling').checked=calibrationPreset==='bed';$('flow-calibration').checked=calibrationPreset==='flow'&&job.flow_calibration_available===true;calibrationPreset='';$('flow-option').hidden=job.flow_calibration_available!==true;var station=(job.slots||[]).length>0;
+    $('material-mapping').hidden=!station;$('independent-note').hidden=station;
+    $('mapping-rows').replaceChildren();
+    
+    job.tools.forEach(function(tool){
+      var filament=(job.filaments||[]).find(function(f){return f.toolId===tool;})||{};
+      var row=document.createElement('div');row.className='mapping-row';row.dataset.tool=tool;
+      var label=document.createElement('div');label.className='mapping-filament';var swatch=document.createElement('span');swatch.className='swatch';var color=filamentColor(filament.color);if(color)swatch.style.backgroundColor=color;
+      var description=document.createElement('span');description.className='mapping-copy';var name=document.createElement('strong');name.textContent='Filamento '+(tool+1)+(filament.material?' · '+filament.material:'');var meta=document.createElement('small');var usage=[];if(filament.weight)usage.push(filament.weight+' g');if(filament.length_mm)usage.push((Number(filament.length_mm)/1000).toFixed(2)+' m');meta.textContent=[filament.brand||filament.preset||'Marca no disponible',usage.length?usage.join(' · '):'Consumo no disponible'].join(' · ');description.append(name,meta);label.append(swatch,description);row.append(label);
+      var choices=document.createElement('div');choices.className='slot-choices';choices.setAttribute('role','group');choices.setAttribute('aria-label','Ranura LFS para filamento '+(tool+1));
+      (job.slots||[]).forEach(function(slot){var button=document.createElement('button');button.type='button';button.className='slot-choice';button.setAttribute('aria-pressed','false');var dot=document.createElement('span');dot.className='swatch';var slotColor=filamentColor(slot.color);if(slotColor&&slot.has_filament)dot.style.backgroundColor=slotColor;var text=document.createElement('span');text.textContent='Ranura '+slot.id;var detail=document.createElement('small');detail.textContent=slot.has_filament?(slot.material||'Material desconocido'):'Vacía';text.append(detail);button.append(dot,text);button.onclick=function(){row.dataset.slot=String(slot.id);choices.querySelectorAll('button').forEach(function(item){item.setAttribute('aria-pressed',String(item===button));});controls();};choices.append(button);if(slot.id===tool+1){row.dataset.slot=String(slot.id);button.setAttribute('aria-pressed','true');}});
+      row.append(choices);$('mapping-rows').append(row);
+    });
+    if(!job.tools.length)$('mapping-rows').textContent='No se detectaron selecciones T de herramienta. No se puede inferir un mapeo de ranuras ni enviar este trabajo.';
+    controls();
+  }
+  function printOptions(){var mappings=[];document.querySelectorAll('.mapping-row').forEach(function(row){var slot=(job.slots||[]).find(function(s){return String(s.id)===row.dataset.slot;});if(!slot)throw Error('Selecciona una ranura para cada filamento.');var filament=(job.filaments||[]).find(function(f){return f.toolId===Number(row.dataset.tool);})||{};mappings.push({toolId:Number(row.dataset.tool),slotId:slot.id,materialName:slot.material||'',toolMaterialColor:filamentColor(filament.color),slotMaterialColor:slot.color||''});});return{plate:job.plate,bed_leveling:$('bed-leveling').checked,flow_calibration:$('flow-calibration').checked,timelapse:$('timelapse').checked,use_material_station:true,material_mappings:mappings};}
+
+  function clearCamera(){cameraActive=false;$('camera-toggle').setAttribute('aria-pressed','false');$('camera-toggle').setAttribute('aria-label','Ver vídeo');$('camera-toggle').title='Ver vídeo';cameraGeneration++;$('printer-illustration').hidden=false;$('camera').hidden=true;$('camera').removeAttribute('src');$('video').hidden=true;$('video').removeAttribute('src');}
+  function startCamera(){
+    if(!cameraUrl){cameraAwaiting=true;$('printer-illustration').hidden=false;$('camera-note').textContent='Orden recibida por el servidor. Esperando la dirección de vídeo de la impresora…';return;}
+    clearCamera();cameraActive=true;$('camera-toggle').setAttribute('aria-label','Ocultar vídeo');$('camera-toggle').title='Ocultar vídeo';$('printer-illustration').hidden=true;
+    if(/(?:\.mjpg|\.mjpeg|[?&]action=stream)(?:[&#?]|$)/i.test(cameraUrl)){$('camera').src=cameraUrl;$('camera').hidden=false;return;}
+    if(!cameraPlayerUrl){$('camera-note').textContent='Reproductor no disponible.';return;}
+    $('camera-note').textContent='Conectando con la cámara…';$('video').hidden=false;$('video').src=cameraPlayerUrl;
+  }
+  window.addEventListener('message',function(event){
+    if($('video').hidden||event.source!==$('video').contentWindow||event.origin!==new URL(cameraPlayerUrl).origin||!event.data)return;
+    if(event.data.command==='camera-ready')event.source.postMessage({command:'camera-play',url:cameraUrl},event.origin);
+    else if(event.data.command==='camera-state'){var playing=event.data.state==='playing';if(!playing)clearCamera();$('camera-toggle').setAttribute('aria-pressed',String(playing));$('camera-note').textContent=playing?'Cámara en directo.':'No se pudo reproducir con el WebView.';if(!playing&&!cameraFallback){cameraFallback=true;cameraActive=true;cameraPending=cameraGeneration;$('camera-note').textContent='Probando reproductor auxiliar…';if(!send('camera_fallback',{device_id:selected})){cameraPending=-1;cameraActive=false;}}}
+  });
+  function metric(value){return typeof value==='number'?value.toFixed(1):'—';}
+  function filamentColor(value){var hex=String(value||'').trim().replace(/^#/,'');return /^[0-9a-f]{6}([0-9a-f]{2})?$/i.test(hex)?'#'+hex.slice(0,6):'';}
+  function renderTemperatures(temperatures,slots){
+    var container=$('temperatures');container.replaceChildren();
+    var nozzles=[],environment=[],linked=[];
+    temperatures.forEach(function(t){(t.name==='Cama'||t.name==='Cámara'?environment:nozzles).push(t);});
+    [{title:'Boquillas',items:nozzles,environment:false},{title:'Cama y cámara',items:environment,environment:true}].forEach(function(group){
+      if(!group.items.length)return;
+      var section=document.createElement('section');section.setAttribute('aria-label',group.title);
+      var heading=document.createElement('h3');heading.className='temperature-heading';heading.textContent=group.title;
+      var grid=document.createElement('div');grid.className='temperature-grid'+(group.environment?' environment':'');
+      group.items.forEach(function(t){
+        var cell=document.createElement('div');cell.className='temperature';
+        var title=document.createElement('div');title.className='temperature-name';title.textContent=t.name;
+        cell.append(title);
+        var filament=!group.environment?slots.find(function(slot){return slot.id===t.filament_slot_id;}):null;
+        var material=null;
+        if(filament){
+          linked.push(filament.id);
+          var color=filamentColor(filament.color);
+          if(filament.has_filament&&color){cell.classList.add('has-filament');cell.style.setProperty('--filament-color',color);}
+          material=document.createElement('div');material.className='nozzle-material'+(filament.has_filament?'':' empty');
+          var swatch=document.createElement('span');swatch.className='swatch';swatch.setAttribute('aria-hidden','true');if(filament.has_filament&&color)swatch.style.backgroundColor=color;
+          var copy=document.createElement('div');copy.className='nozzle-material-copy';
+          var materialName=document.createElement('strong');materialName.textContent=filament.has_filament?(filament.material||'Material desconocido'):'Sin filamento';
+          var slotName=document.createElement('small');slotName.textContent='Ranura '+filament.id;
+          if(filament.has_filament){slotName.textContent+=' · Marca/modelo no facilitados';}copy.append(materialName,slotName);material.append(swatch,copy);
+        }
+        var current=document.createElement('div');current.className='temperature-current';
+        var value=document.createElement('b');value.textContent=metric(t.current);
+        var unit=document.createElement('span');unit.textContent='°C';current.append(value,unit);
+        var target=document.createElement('div');target.className='temperature-target';
+        var targetLabel=document.createElement('span');targetLabel.textContent='Objetivo';
+        var targetValue=document.createElement('span');targetValue.textContent=metric(t.target)+' °C';
+        target.append(targetLabel,targetValue);cell.append(current,target);if(material)cell.append(material);grid.append(cell);
+      });
+      section.append(heading,grid);container.append(section);
+    });
+    if(!temperatures.length)container.textContent='La impresora no ha enviado temperaturas.';
+    return linked;
+  }
+  function render(data,background){
+    var firstStatus=lastStatus===null;lastStatus=data;
+    updatePrinterStatus();var running=['printing','pause','pausing','heating','canceling','busy'].includes(String(data.status||'').trim().toLowerCase());$('active-job').hidden=!running;$('calibrate-bed').disabled=running;$('calibrate-flow').disabled=running||data.flow_calibration_available!==true;$('print-panel').hidden=String(data.status||'').trim().toLowerCase()==='printing';$('light-state').textContent=data.light_status==='open'?'Encendida':data.light_status==='close'?'Apagada':'Estado desconocido';$('light-label').textContent=data.light_status==='open'?'Apagar luz':'Encender luz';$('light-toggle').setAttribute('aria-pressed',String(data.light_status==='open'));$('light-toggle').setAttribute('aria-label',$('light-label').textContent);$('light-toggle').title=$('light-label').textContent;
+    $('name').textContent=data.name||'FlashForge';$('state').textContent=data.status||'Desconocido';var art=data.job_thumbnail||(sentJob&&sentJob.id&&data.job_id===sentJob.id?sentJob.preview:'')||'';$('job-art').hidden=!art;if(art){$('job-art-muted').src=art;$('job-art-color').src=art;var p=typeof data.progress==='number'?Math.max(0,Math.min(100,data.progress)):0;$('job-art-fill').style.clipPath='inset('+(100-p)+'% 0 0 0)';}
+    $('file').textContent=data.file||'Sin trabajo recibido';$('firmware').textContent=data.firmware||'—';$('calibration-note').textContent=data.flow_calibration_available?'Puedes activar la nivelación y la calibración de flujo antes de imprimir.':'Puedes activar la nivelación antes de imprimir. La máquina no ha confirmado calibración de flujo.';var info=data.machine_info||{};$('machine-model').textContent=info.model||'—';$('machine-nozzles').textContent=info.nozzle_model||'—';$('machine-volume').textContent=info.build_volume?info.build_volume+' mm':'—';$('machine-hours').textContent=typeof info.print_hours==='number'?info.print_hours.toFixed(1)+' h':'—';$('machine-filament').textContent=typeof info.filament_metres==='number'?info.filament_metres.toFixed(1)+' m':'—';$('machine-storage').textContent=typeof info.free_storage_gb==='number'?info.free_storage_gb.toFixed(1)+' GB':'—';
+    $('progress').value=data.progress||0;$('job-progress').textContent=data.progress===null?'—':data.progress.toFixed(1)+' %';
+    $('layers').textContent='Capas: '+(data.layer===null?'—':data.layer)+' / '+(data.layers===null?'—':data.layers);
+    var linked=renderTemperatures(data.temperatures,data.slots);
+    $('slots').replaceChildren();
+    var unlinked=data.slots.filter(function(slot){return linked.indexOf(slot.id)===-1;});
+    unlinked.forEach(function(slot){var row=document.createElement('div');row.className='slot';var dot=document.createElement('span');dot.className='swatch';var color=filamentColor(slot.color);if(slot.has_filament&&color)dot.style.backgroundColor=color;var label=document.createElement('span');label.textContent='Ranura '+slot.id+' · '+(slot.has_filament?(slot.material||'Material desconocido'):'Sin filamento');row.append(dot,label);$('slots').append(row);});
+    $('unlinked-filaments').hidden=!unlinked.length;
+    var next=data.camera_url||'', wasShowing=!$('video').hidden||!$('camera').hidden;if(cameraUrl!==next){clearCamera();cameraUrl=next;if(wasShowing&&next)startCamera();}cameraUrl=next;if(cameraAwaiting&&next){cameraAwaiting=false;startCamera();}
+    $('last-update').textContent='';controls();
+  }
+  function cancelWaitingAction(){
+    if(!pendingAction)return;
+    if(pendingAction.command==='commit_print'){transferActive=false;$('transfer-state').textContent='El envío no se inició: no llegó la respuesta de estado.';}
+    pendingAction=null;busy=false;
+    notice('No llegó la respuesta de estado. La acción pendiente no se ejecutó; vuelve a pulsarla cuando se recupere la conexión.',true);
+  }
+  function receiveSafely(message){
+    try{receive(message);}catch(error){
+      statusRequest=null;cancelWaitingAction();controls();
+      $('last-update').textContent='No se pudo mostrar el estado; vuelve a actualizar.';
+      notice('Error al procesar la respuesta del plugin ('+(error.name||'Error')+').',true);
+    }
+  }
+  function receive(message){
+    if(message.command==='status_refresh'){
+      if(!statusRequest||message.request_id!==statusRequest.id)return;
+      var request=statusRequest;statusRequest=null;
+      var current=request.generation===statusGeneration&&request.device_id===selected&&request.mode===pollingMode&&message.device_id===request.device_id&&(!message.mode||message.mode===request.mode);
+      if(current&&!pendingAction){
+        if(message.status)render(message.status,request.background);
+        else if(message.error){$('last-update').textContent='No se pudo actualizar; se reintentará.';if(!request.background||lastStatus===null)notice(message.error,true);}
+        else if(message.skipped)$('last-update').textContent='Adaptador ocupado; se reintentará en 5 s.';
+      }
+      if(message.account_state)receive(Object.assign({command:'account_state'},message.account_state));
+      controls();
+      if(pendingAction){var action=pendingAction;pendingAction=null;window.orca.postMessage(action);}
+      return;
+    }
+    if(message.command==='camera_fallback'){var pending=cameraPending===cameraGeneration;cameraPending=-1;if(pending&&message.url){clearCamera();cameraActive=true;$('printer-illustration').hidden=true;$('camera').src=message.url;$('camera').hidden=false;$('camera-note').textContent='Conectando reproductor auxiliar…';}return;}
+    if(message.command==='camera_server'){cameraPlayerUrl=message.url||'';var startPending=cameraPending===cameraGeneration;cameraPending=-1;if(startPending&&cameraPlayerUrl){cameraUrl=message.camera_url||cameraUrl;startCamera();}return;}
+    if(message.command==='done'){busy=false;restoring=false;$('cancel-upload').disabled=true;controls();renderPrinters();setTimeout(refreshStatus,0);return;}
+    if(message.command==='busy'){busy=false;if(transferActive){transferActive=false;$('transfer-state').textContent='El envío no se inició: hay otra operación en curso.';}controls();notice('Hay una operación en curso.');return;}
+    if(message.command==='error'){busy=false;if(transferActive){transferActive=false;$('transfer-state').textContent=message.error;$('cancel-upload').disabled=true;}if(cameraPending===cameraGeneration){clearCamera();$('camera-note').textContent=message.error;cameraPending=-1;}notice(message.error,true);$('cancel-upload').disabled=true;controls();return;}
+    if(message.command==='config'){
+      configLoaded=true;statusProtocol=message.status_protocol||0;restoring=message.restoring===true;
+      if(pollingMode!==message.config.mode||selected!==message.config.device_id)statusGeneration++;
+      pollingMode=message.config.mode;
+      if(restoring){$('last-update').textContent='Recuperando la cuenta guardada…';notice('Recuperando la cuenta guardada…');}
+      $('remember-account').checked=message.config.remember_account!==false;if(!account)$('username').value=message.config.account_name||$('username').defaultValue;
+      if(selected!==message.config.device_id)clearDeviceStatus();selected=message.config.device_id;bindings=message.config.profile_bindings||{};profile=message.profile||{};devices=message.devices||[];renderAccount(message.account);renderPrinters();plateDetails={};(message.plate_details||[]).forEach(function(d){plateDetails[d.plate]=d;});renderPlates(message.sliced_plates||[],message.slicing,profile.plate);scheduleStoredFiles(selected,0);
+      if(!restoring)setTimeout(refreshStatus,0);
+    }
+    if(message.command==='account'){renderAccount(message.account);if(message.account){restoring=false;setTimeout(refreshStatus,0);}}
+    if(message.command==='account_state'&&message.remember_warning)notice(message.remember_warning,true);
+    if(message.command==='restore_empty')notice('No hay una sesión guardada. Conecta tu cuenta una vez.');
+    if(message.command==='remember_error')notice(message.error,true);
+    if(message.command==='saved'){statusGeneration++;pollingMode='cloud';invalidate();renderAccount(null);devices=[];renderPrinters();clearCamera();cameraUrl='';$('camera-toggle').disabled=true;notice('Configuración guardada. '+(message.restoring?'Recuperando la cuenta guardada…':'Inicia sesión en FlashForge.'));}
+    if(message.command==='probe')notice('FlashNetwork '+message.sdk_version+(message.supported?' · versión admitida':' · versión aún no admitida'),!message.supported);
+    if(message.command==='devices'){
+      devices=message.devices;if(!devices.some(function(d){return d.devId===selected;}))selected='';if(!selected){var matches=devices.filter(function(d){return String(d.model||'').trim().toLowerCase()==='creator 5 pro';});if(matches.length===1)selected=matches[0].devId;}renderPrinters();notice(devices.length+' impresora(s) de tu cuenta. Elige el destino de impresión.');
+      setTimeout(refreshStatus,0);scheduleStoredFiles(selected,0);
+    }
+    if(message.command==='stored_files'&&message.device_id===selected)renderStoredFiles(message.files||[]);
+    if(message.command==='recordings'&&message.device_id===selected){var list=$('recordings-list');list.replaceChildren();if(!message.recordings.length){list.textContent='No hay grabaciones disponibles.';}message.recordings.forEach(function(recording){var row=document.createElement('p');if(recording.url){var link=document.createElement('a');link.href=recording.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=recording.name||'Ver grabación';row.append(link);}else{row.textContent=(recording.name||'Grabación')+' · enlace no disponible';}list.append(row);});}
+    if(message.command==='move_dispatched'){notice('Orden de movimiento enviada. Comprueba la posición de la impresora.');setTimeout(refreshStatus,0);}
+    if(message.command==='status')render(message.status);
+
+    if(message.command==='cancel_print_dispatched'){notice('Solicitud de cancelación recibida por el servidor. Esperando el estado de la impresora.');setTimeout(refreshStatus,500);}
+    if(message.command==='light_dispatched'){notice('Orden recibida por el servidor. El estado de la luz aún no está confirmado.');setTimeout(refreshStatus,500);}
+    if(message.command==='previews_done'){notice('Vistas del proyecto generadas.');controls();}
+    if(message.command==='previews_error'){notice(message.error,true);controls();}
+    if(message.command==='plate_details'){plateDetails[message.details.plate]=message.details;if(job&&job.automatic_plate&&job.plate===message.details.plate&&message.details.thumbnail){var previewImage=document.createElement('img');previewImage.src=message.details.thumbnail;previewImage.alt='Vista previa de la placa '+job.plate;$('review-image').replaceChildren(previewImage);}renderPlateCards(Array.from($('sliced-plates').options).map(function(o){return Number(o.value);}).filter(Boolean));}
+    if(message.command==='sliced_plates'){invalidate();renderPlates(message.plates||[],message.slicing,message.selected);}
+    if(message.command==='job_invalidated'){previewAttempt='';invalidate();$('exported-name').textContent='El proyecto cambió. Vuelve a laminar o elige un archivo.';setTimeout(function(){window.orca.postMessage({command:'config'});},100);}
+    if(message.command==='print_prepared'){review(message.job);notice('Revisa el destino y los materiales antes de confirmar.');}
+    if(message.command==='print_progress'){transferActive=true;var phase=message.phase;var percent=message.total>0?Math.min(100,100*message.now/message.total):0;$('transfer').hidden=false;$('transfer-state').textContent=phase==='uploading'?'Subiendo archivo y miniatura · '+percent.toFixed(0)+' %':phase==='creating'?'Creando el trabajo en FlashForge…':'Enviando la orden de inicio…';$('transfer-progress').value=phase==='uploading'?percent:100;$('cancel-upload').disabled=phase!=='uploading';}
+    if(message.command==='cancel_requested'){notice('Cancelación de subida solicitada. Esperando confirmación…');$('cancel-upload').disabled=true;}
+    if(message.command==='cancel_error')notice(message.error,true);
+    if(message.command==='print_dispatched'){transferActive=false;sentJob={id:message.result.job_id||'',preview:submittedPreview};invalidate();$('transfer-state').textContent='Orden enviada. La recepción por la impresora y el inicio no están confirmados.';notice('Trabajo '+message.result.name+' enviado. Recepción por la impresora e inicio pendientes de confirmar.');}
+    if(message.command==='disconnected'){statusGeneration++;invalidate();renderAccount(null);devices=[];clearDeviceStatus();renderPrinters();notice('Sesión cerrada.');}
+  }
+  $('login').onclick=function(){var password=$('password').value;if(send('login',{username:$('username').value,password:password,remember:$('remember-account').checked}))$('password').value='';};
+  $('restore-login').onclick=function(){notice('Recuperando la cuenta desde el llavero…');send('restore_login',{force:true});};
+  $('disconnect').onclick=function(){send('disconnect');};
+  $('devices-refresh').onclick=function(){send('devices');};
+  $('load-stored').onclick=function(){if(selected){storedRequested='';scheduleStoredFiles(selected,0);}};
+  $('calibrate-bed').onclick=function(){calibrationPreset='bed';$('print-panel').scrollIntoView({behavior:'smooth'});notice('Selecciona una placa para preparar la nivelación antes de imprimir.');};
+  $('calibrate-flow').onclick=function(){calibrationPreset='flow';$('print-panel').scrollIntoView({behavior:'smooth'});notice('Selecciona una placa para preparar la calibración de flujo antes de imprimir.');};
+  $('load-recordings').onclick=function(){if(!selected){notice('Selecciona una impresora.',true);return;}send('recordings',{device_id:selected});};
+  $('devices').onchange=function(){selectPrinter(this.value);};
+  $('sliced-plates').onchange=invalidate;$('close-review').onclick=invalidate;
+  $('commit-print').onclick=function(){if(!job)return;try{var opts=printOptions();var pendingJob=job;submittedPreview=pendingJob.preview||'';if(send('commit_print',{job_id:pendingJob.id,device_id:pendingJob.device_id,confirmed:true,options:opts})){transferActive=true;$('review').hidden=true;$('transfer').hidden=false;$('transfer-name').textContent=pendingJob.name||('Placa '+pendingJob.plate);$('transfer-thumb').hidden=!pendingJob.preview;if(pendingJob.preview)$('transfer-thumb').src=pendingJob.preview;$('transfer-state').textContent='Preparando la conexión…';$('transfer-progress').value=0;job=null;}}catch(error){notice(error.message,true);}};
+  $('cancel-print').onclick=function(){if(!lastStatus||!lastStatus.job_id)return;if(window.confirm('¿Cancelar la impresión en curso en esta impresora?'))send('cancel_print',{device_id:selected,job_id:lastStatus.job_id,confirmed:true});};
+  $('cancel-upload').onclick=function(){window.orca.postMessage({command:'cancel_upload'});};
+  $('camera-toggle').onclick=function(){if(cameraActive||cameraAwaiting||cameraPending>=0){cameraAwaiting=false;cameraPending=-1;cameraFallback=false;clearCamera();window.orca.postMessage({command:'camera_stop'});$('camera-note').textContent='Cámara oculta.';return;}clearCamera();cameraFallback=false;cameraActive=true;cameraPending=cameraGeneration;$('camera-toggle').setAttribute('aria-label','Ocultar vídeo');$('camera-toggle').title='Ocultar vídeo';$('camera-note').textContent='Solicitando cámara…';if(!send('camera_server',{device_id:selected})){cameraActive=false;cameraPending=-1;}};
+  $('light-toggle').onclick=function(){if(lastStatus&&['open','close'].includes(lastStatus.light_status))send('light',{device_id:selected,value:lastStatus.light_status==='open'?'close':'open'});};
+  $('camera').onload=function(){$('camera-toggle').setAttribute('aria-pressed','true');$('camera-note').textContent='Cámara en directo.';};
+  $('camera').onerror=function(){clearCamera();window.orca.postMessage({command:'camera_stop'});notice('No se pudo reproducir el vídeo de la cámara.',true);};
+  $('video').onerror=function(){notice('El WebView no pudo reproducir este formato de vídeo.',true);};
+  function requestStatus(background){
+    if(busy||statusRequest||!window.orca||!pollingMode)return;
+    if(statusProtocol!==1){$('last-update').textContent='Reinicia OrcaSlicer para cargar el plugin actualizado.';return;}
+    if(pollingMode==='cloud'&&!account){$('last-update').textContent='Conecta la cuenta para consultar el estado.';return;}
+    if(pollingMode==='cloud'&&!selected){$('last-update').textContent='Selecciona una impresora para consultar el estado.';return;}
+    if(pollingMode==='lan'&&!$('host').value.trim())return;
+    statusRequest={id:statusSession+':'+(++nextStatusRequest),device_id:selected,mode:pollingMode,generation:statusGeneration,background:background,started:Date.now()};
+    controls();
+    try{window.orca.postMessage({command:'status',background:true,request_id:statusRequest.id,device_id:selected});}
+    catch(error){statusRequest=null;controls();$('last-update').textContent='No se pudo contactar con el plugin; se reintentará.';}
+  }
+  function refreshStatus(){
+    if(statusRequest&&Date.now()-statusRequest.started>=65000){
+      statusRequest=null;cancelWaitingAction();controls();
+      $('last-update').textContent='Sin respuesta del plugin; se reintentará.';
+      window.orca.postMessage({command:'config'});
+      return;
+    }
+    if(!window.orca)return;
+    if(!configLoaded||restoring){window.orca.postMessage({command:'config'});return;}
+    requestStatus(true);
+  }
+  function startPolling(){if(statusTimer===null)statusTimer=setInterval(refreshStatus,5000);}
+  window.addEventListener('pagehide',function(){clearCamera();clearInterval(statusTimer);statusTimer=null;});
+  window.addEventListener('pageshow',startPolling);
+  startPolling();
+  function ready(){if(!window.orca||typeof window.orca.onMessage!=='function'||typeof window.orca.postMessage!=='function'){setTimeout(ready,50);return;}window.orca.onMessage(receiveSafely);window.orca.postMessage({command:'config'});}
+  ready();
+})();
+</script>
+</body>
+</html>

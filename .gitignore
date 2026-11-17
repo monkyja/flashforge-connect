@@ -1,0 +1,15 @@
+.references/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+local/
+.coverage
+.ruff_cache/
+
+# Archivos originales del SDK de FlashForge; no distribuirlos.
+libFlashNetwork.so*
+FLASHNETWORK*.DAT
+flashnetwork*.dat

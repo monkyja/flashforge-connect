@@ -1,0 +1,18 @@
+{
+  "analyzed_on": "2026-11-13",
+  "orcaslicer": {
+    "url": "https://github.com/OrcaSlicer/OrcaSlicer",
+    "ref": "v2.5.0",
+    "commit": "40ecc66f78ed72dc368e0c1ebe40d77f00cc8a19"
+  },
+  "flashforge": {
+    "url": "https://github.com/FlashForge/Orca-Flashforge",
+    "ref": "develop",
+    "commit": "ea9a451f89d2be656df0445388d6237319db91d4",
+    "sdk_version": "3.4.0"
+  },
+  "flashforge_main_analyzed": {
+    "commit": "c45cc8216c184574c36873314ae7caea67c7a1ad",
+    "sdk_version": "3.0.0"
+  }
+}

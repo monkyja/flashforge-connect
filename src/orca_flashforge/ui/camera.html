@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><style>
+html,body{margin:0;background:#141920;color:#aeb9c9;font:14px sans-serif}video{width:100%;min-height:100px;max-height:65vh;background:#141920;object-fit:contain}p{margin:8px 0}
+</style></head><body><video id="video" controls muted playsinline></video><p id="message">Conectando con la cámara…</p>
+<script>
+__HLS_LIBRARY__
+</script>
+<script>
+(function(){
+  'use strict';
+  var video=document.getElementById('video'), message=document.getElementById('message'), player=null, started=false, timer=null;
+  function stop(){clearTimeout(timer);if(player){player.destroy();player=null;}video.onerror=null;video.pause();video.removeAttribute('src');video.load();}
+  function report(state){window.parent.postMessage({command:'camera-state',state:state},'*');}
+  function failed(){stop();message.textContent='No se pudo reproducir la cámara. Comprueba la conexión y los códecs H.264 del WebView.';report('error');}
+  function begin(url){
+    if(started||typeof url!=='string'||!/^https?:\/\//i.test(url))return;
+    started=true;
+    function nativePlayback(){
+      if(player){player.destroy();player=null;}
+      video.onerror=failed;video.src=url;
+      var play=video.play();if(play)play.catch(function(){if(!video.error)message.textContent='Pulsa reproducir en el vídeo.';});
+    }
+    video.onplaying=function(){clearTimeout(timer);message.textContent='Cámara en directo.';report('playing');};
+    timer=setTimeout(failed,30000);
+    if(typeof Hls==='undefined'||!Hls.isSupported()){nativePlayback();return;}
+    player=new Hls({enableWorker:false});
+    player.on(Hls.Events.ERROR,function(event,data){if(data.fatal)nativePlayback();});
+    player.loadSource(url);player.attachMedia(video);
+    var play=video.play();if(play)play.catch(function(){if(player)message.textContent='Pulsa reproducir en el vídeo.';});
+  }
+  window.addEventListener('message',function(event){if(event.source===window.parent&&event.data&&event.data.command==='camera-play')begin(event.data.url);});
+  window.addEventListener('pagehide',stop);
+  window.parent.postMessage({command:'camera-ready'},'*');
+})();
+</script></body></html>

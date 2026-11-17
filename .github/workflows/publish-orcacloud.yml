@@ -1,0 +1,45 @@
+name: Publish plugin to OrcaCloud
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download the reviewed release wheel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release download "$RELEASE_TAG" --pattern 'orca_flashforge-*.whl' --dir dist
+      - name: Check wheel and version
+        env:
+          RELEASE_REF: refs/tags/${{ github.event.release.tag_name }}
+        run: python scripts/check_distribution.py
+      - name: Publish to OrcaCloud
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          oidc_token="$(curl -fsS -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=orcacloud" | jq -er .value)"
+          version="${RELEASE_TAG#v}"
+          metadata="$(jq -cn --arg version "$version" \
+            --arg changelog "$(jq -r '.release.body // "" | .[0:4000]' "$GITHUB_EVENT_PATH")" \
+            '{version: $version} + (if $changelog == "" then {} else {changelog: $changelog} end)')"
+          files=(dist/orca_flashforge-*.whl)
+          curl -fsS -H "Authorization: Bearer $oidc_token" \
+            -F "metadata=$metadata" -F "files=@${files[0]}" \
+            https://api.orcaslicer.com/api/v1/plugin-publish/releases

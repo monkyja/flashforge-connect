@@ -1,0 +1,561 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Informe visual de análisis estático de FlashNetwork 3.4.0 y FLASHNETWORK9.DAT para OrcaFlashForge."><title>FlashNetwork 3.4.0 · Análisis</title><style>
+:root{color-scheme:light;--ink:#172522;--muted:#596d66;--paper:#f6f8f5;--panel:#fff;--line:#dce6df;--green:#126b53;--mint:#dff4e9;--amber:#d78330;--code:#f0f4f1;--shadow:0 14px 40px #102b2010}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:26px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.72 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}.progress{height:4px;background:linear-gradient(90deg,#36a77b,#d49a4c);position:fixed;z-index:5;top:0;left:0;width:0}header{background:#102b25;color:#eef8f0;padding:34px max(7vw,calc((100vw - 1380px)/2)) 30px;border-bottom:4px solid var(--amber)}header .eyebrow{margin:0 0 9px;color:#a9d9c4;text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;font-weight:750}header h1{margin:0;max-width:850px;font-size:clamp(1.8rem,3vw,2.65rem);line-height:1.13;letter-spacing:-.04em}header .sub{margin:14px 0 0;color:#cadbd2;max-width:850px}.badges{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}.badge{border:1px solid #55796a;border-radius:999px;padding:4px 11px;color:#e6f4eb;font-size:.8rem}.layout{max-width:1380px;margin:32px auto;padding:0 28px;display:grid;grid-template-columns:255px minmax(0,1fr);gap:30px}.rail{position:sticky;top:22px;align-self:start;max-height:calc(100vh - 44px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}.rail h2{font-size:.78rem;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);margin:2px 0 10px}.rail nav{display:grid;gap:3px}.rail a{font-size:.85rem;line-height:1.35;text-decoration:none;color:var(--muted);padding:7px 9px;border-radius:8px}.rail a:hover,.rail a.active{background:var(--mint);color:#105c47}.rail a.sub{padding-left:20px;font-size:.79rem}.article{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(24px,4.5vw,62px);box-shadow:var(--shadow)}article h1{display:none}article h2{margin:2.7em 0 .7em;padding-top:.2em;border-top:1px solid var(--line);font-size:1.55rem;line-height:1.25;letter-spacing:-.025em;color:#173f32}article h2:first-of-type{margin-top:1.5em}article h3{margin:2em 0 .55em;font-size:1.13rem;color:#285744}p{margin:.8em 0}strong{color:#163f31}a{color:#08765b}ul,ol{padding-left:1.35em}li{padding-left:.18em;margin:.28em 0}table{display:block;max-width:100%;overflow:auto;border-collapse:collapse;margin:1.2em 0 1.7em;font-size:.9rem;line-height:1.5;border:1px solid var(--line);border-radius:11px}th,td{padding:10px 13px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#edf5ef;color:#244b3a;font-size:.82rem;white-space:nowrap}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#f8faf8}code{font: .88em/1.55 ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--code);padding:.12em .36em;border-radius:5px;color:#174d3c;overflow-wrap:anywhere}pre{overflow:auto;padding:18px;background:#132820;color:#e5f1e9;border-radius:12px;line-height:1.55;border:1px solid #28473a}pre code{background:none;color:inherit;padding:0;overflow-wrap:normal}blockquote{border-left:4px solid var(--amber);padding:9px 17px;margin:1.3em 0;background:#fff8ec;color:#604c32}hr{border:0;border-top:1px solid var(--line);margin:2em 0}footer{max-width:1380px;margin:0 auto 34px;padding:0 28px;color:var(--muted);font-size:.82rem}.callout{display:flex;gap:12px;align-items:flex-start;background:var(--mint);border:1px solid #c4e6d3;border-radius:12px;padding:14px 16px;margin:20px 0 27px;color:#204d3a}.callout strong{white-space:nowrap}@media(max-width:920px){.layout{grid-template-columns:1fr;margin-top:18px}.rail{position:static;max-height:none}.rail nav{grid-template-columns:repeat(auto-fit,minmax(175px,1fr))}.rail a.sub{padding-left:9px}.article{padding:25px}}@media print{body{background:#fff;font-size:10.5pt}.progress,.rail{display:none}.layout{display:block;max-width:none;margin:0;padding:0}.article{border:0;box-shadow:none;padding:0}header{padding:22px;background:#102b25!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}table{display:table;overflow:visible;font-size:8.5pt}pre{white-space:pre-wrap;word-break:break-word}h2,h3{break-after:avoid}tr,pre{break-inside:avoid}footer{padding:0}}
+</style></head><body><div class="progress"></div><header><p class="eyebrow">OrcaFlashForge · Informe técnico</p><h1>FlashNetwork 3.4.0</h1><p class="sub">Análisis estático del SDK y <code>FLASHNETWORK9.DAT</code> para interoperabilidad con Creator 5 Pro.</p><div class="badges"><span class="badge">119 símbolos verificados</span><span class="badge">Análisis estático</span><span class="badge">Sin conexión a impresora</span><span class="badge">15 nov 2026</span></div></header><div class="layout"><aside class="rail"><h2>En este informe</h2><nav id="toc"></nav></aside><main class="article"><article><h1>FlashNetwork 3.4.0: análisis estático de SDK y DAT</h1>
+
+<p>Fecha: 2026-11-15. Objetivo: documentar contratos pendientes de OrcaFlashForge para interoperabilidad con FlashForge Creator 5 Pro. Esta investigación continúa <code>docs/analisis.md</code>; no sustituye su historial de implementación y validación.</p>
+
+<h2>Alcance y resultado</h2>
+
+<p>Se inspeccionaron bytes, símbolos, ensamblador, cabeceras y consumidores de referencia. Se reconstruyó el contenedor del DAT mediante un lector independiente en memoria. No se cargó ni ejecutó <code>libFlashNetwork.so</code>, tampoco mediante <code>ctypes</code>, <code>ldd</code> o un depurador. No hubo llamadas a FlashForge, cuentas ni impresoras. No se modificó código de integración ni <code>.references/</code>.</p>
+
+<p>Resultados principales:</p>
+
+<ul>
+<li>La biblioteca examinada identifica estáticamente su versión como <strong>3.4.0</strong> y exporta las <strong>119 funciones C</strong> declaradas en la cabecera fijada.</li>
+<li>Se localizaron serializadores de los controles pendientes, las consultas de archivos y timelapse, y sus contratos de memoria.</li>
+<li><code>sendMulti</code> implementa una restricción más estrecha que el comentario de la cabecera.</li>
+<li>El parser de eventos compara dos veces <code>job_download</code>; la segunda rama intenta generar <code>FNET_CONN_READ_JOB_UNZIP</code>. Es un probable defecto del SDK, identificado por análisis estático.</li>
+<li><code>FLASHNETWORK9.DAT</code> contiene un encabezado <code>FNETDAT-1.2.0</code>, relleno verificable con MT19937 y una carga cifrada de 314 bytes. La biblioteca usa AES-256-OFB en su lector. No se descifró ni publicó el contenido de configuración.</li>
+</ul>
+
+
+<p>No se atribuye a estos resultados validación física, compatibilidad de todos los controles con Creator 5 Pro ni reconstrucción completa del protocolo cloud.</p>
+
+<h2>1. Identidad y procedencia</h2>
+
+<p>Los archivos locales están en:</p>
+
+<ul>
+<li><code>/home/monky/Impresora3D/squashfs-root/bin/libFlashNetwork.so</code></li>
+<li><code>/home/monky/Impresora3D/squashfs-root/resources/data/FLASHNETWORK9.DAT</code></li>
+</ul>
+
+
+<p>También se extrajeron únicamente esos dos miembros de <code>/home/monky/.local/opt/flash-studio/FlashStudio-1.7.9.AppImage</code>, usando <code>7z</code>, sin ejecutar el AppImage. <strong>Ambas parejas tienen hashes idénticos</strong>. El nombre observado del DAT es <code>FLASHNETWORK9.DAT</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th> Artefacto </th>
+<th style="text-align:right;"> Tamaño </th>
+<th> SHA-256 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>libFlashNetwork.so</code> </td>
+<td style="text-align:right;"> 2.040.800 bytes </td>
+<td> <code>7c7afb73c4f27fe34a243404e9536ccb3ad67877eeebfa9674ea6183431d68a6</code> </td>
+</tr>
+<tr>
+<td> <code>FLASHNETWORK9.DAT</code> </td>
+<td style="text-align:right;"> 7.482 bytes </td>
+<td> <code>889d2f9a3bb1801b37a1d2a13e8914aa9d9fe1b1fb5de34bb2a684c0fb3d88ce</code> </td>
+</tr>
+<tr>
+<td> <code>native/FlashNetwork-3.4.0.h</code> </td>
+<td style="text-align:right;"> — </td>
+<td> <code>812671c84b57a69190c81f5c5966b35dfee516cbf4c95f042d6e457678e25174</code> </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>La cabecera vendorizada y <code>.references/Orca-Flashforge/src/slic3r/GUI/FlashForge/FlashNetwork.h</code> tienen el mismo SHA-256.</p>
+
+<p>Los HEAD observados coinciden con <code>upstreams.lock.json</code>:</p>
+
+<table>
+<thead>
+<tr>
+<th> Repositorio </th>
+<th> Commit </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> OrcaSlicer </td>
+<td> <code>40ecc66f78ed72dc368e0c1ebe40d77f00cc8a19</code> </td>
+</tr>
+<tr>
+<td> Orca-Flashforge, <code>develop</code> </td>
+<td> <code>ea9a451f89d2be656df0445388d6237319db91d4</code> </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>La referencia antigua <code>main</code> corresponde al SDK 3.0.0; no se utilizó para deducir el ABI de esta biblioteca.</p>
+
+<h3>Evidencia ELF</h3>
+
+<p><code>file</code> y <code>readelf</code> identifican ELF64, little endian, x86-64, tipo <code>DYN</code>, con tablas de símbolos conservadas. Build ID: <code>98819a919765829d7d4b4ee2186eab90cdee606d</code>.</p>
+
+<p>Dependencias <code>DT_NEEDED</code>: <code>libcurl.so.4</code>, <code>libssl.so.3</code>, <code>libcrypto.so.3</code>, <code>libz.so.1</code>, <code>libstdc++.so.6</code>, <code>libm.so.6</code>, <code>libgcc_s.so.1</code>, <code>libc.so.6</code>. Esto es inventario estático; no se comprobó su resolución por el cargador.</p>
+
+<p><strong>Convención de direcciones:</strong> todas las direcciones de funciones e instrucciones de este informe son VA del ELF antes de ASLR. En los segmentos de código y <code>.rodata</code> de este archivo, <code>p_vaddr == p_offset</code>: esas direcciones son también offsets de archivo. Esto no se extiende a los datos mutables ni a <code>.bss</code>. La fórmula general es <code>offset = VA - p_vaddr + p_offset</code>; una dirección en <code>.bss</code> no tiene bytes de archivo correspondientes.</p>
+
+<p>Evidencia completa local: <code>local/sdk-analysis-2026-11-15/evidence/elf.txt</code>, <code>symbols.txt</code>, <code>disassembly.txt</code>, <code>inventory.json</code> y <code>api-inventory.tsv</code>. Este último relaciona cada función pública con su VA y línea de declaración.</p>
+
+<h2>2. Versión y compatibilidad observada</h2>
+
+<p><strong>Hecho confirmado en ensamblador.</strong> <code>fnet_getVersion</code>, VA <code>0x6abf0</code>, devuelve el puntero de <code>g_versionStr</code>, VA <code>0x1a1a50</code>, situado en <code>.bss</code>. El constructor <code>_GLOBAL__sub_I_FlashNetwork.cpp</code>, VA <code>0x62910</code>, prepara esa cadena: instrucciones <code>0x62a2d</code> y <code>0x62a37</code> escriben las constantes <code>0x2e342e33</code> y <code>0x30</code>. Interpretadas en little endian forman <code>3.4.0\0</code>.</p>
+
+<p>Reproducción de esa conversión, sin invocar el SDK:</p>
+
+<p><code>python  
+import struct  
+print(struct.pack('&lt;IH', 0x2e342e33, 0x30))  # b'3.4.0\x00'  
+</code></p>
+
+<p>El consumidor fijado exige <code>strcmp(getVersion(), "3.4.0") == 0</code> en <code>FlashNetworkIntfc.cpp:145</code>. Se compararon nombres declarados mediante <code>FNET_API</code> con los símbolos dinámicos definidos: 119 en cada conjunto, sin ausentes ni extras.</p>
+
+<p><strong>Límite:</strong> versión y nombres coincidentes no prueban por sí solos todos los tamaños, ownership, precondiciones o comportamientos del ABI. Los layouts siguientes se obtuvieron del compilador local; solo algunos accesos fueron contrastados además con ensamblador.</p>
+
+<h2>3. Contrato del archivo DAT</h2>
+
+<h3>Estructura observada y reconstruida</h3>
+
+<table>
+<thead>
+<tr>
+<th> Offset del DAT </th>
+<th> Contenido </th>
+<th> Evidencia </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>0x00</code> </td>
+<td> Encabezado de 20 bytes; prefijo ASCII <code>FNETDAT-1.2.0</code>, seguido de ceros en esta muestra </td>
+<td> Bytes del archivo; lectura y comparación en <code>0x1192ff–0x119340</code> </td>
+</tr>
+<tr>
+<td> <code>0x14</code> </td>
+<td> Entero de 8 bytes little endian; el lector usa sus 32 bits bajos como semilla </td>
+<td> Lectura en <code>0x119360–0x119365</code>; uso en <code>0x1193ac</code> </td>
+</tr>
+<tr>
+<td> <code>0x1c</code> </td>
+<td> Longitud de la carga reconstruida, entero de 8 bytes: <strong>314</strong> </td>
+<td> Lectura en <code>0x119374–0x119379</code> </td>
+</tr>
+<tr>
+<td> <code>0x24</code> en adelante </td>
+<td> Bloques de valores de MT19937 intercalados con fragmentos de la carga </td>
+<td> Bucle de <code>readSettings</code>, especialmente <code>0x1194c7</code>, <code>0x1195d0–0x1195df</code>, <code>0x1195ed–0x119634</code> </td>
+</tr>
+</tbody>
+</table>
+
+
+<p><code>fnet::ServerSettingRW::readSettings</code>, VA <code>0x119190</code>, construye un MT19937 con la semilla. Por bloque, el byte bajo de una salida determina cuántos enteros de 32 bits leer y comparar con las siguientes salidas del generador. Otra salida, enmascarada con <code>0x3f</code>, determina los bytes de carga que se leen a continuación, sin superar la longitud restante.</p>
+
+<p><strong>Comprobación independiente sobre bytes:</strong> se verificaron los <strong>1.783 enteros de relleno</strong>, se reconstruyeron los <strong>314 bytes</strong> y se consumieron exactamente los <strong>7.482 bytes</strong> del archivo, sin sobrantes. SHA-256 de la carga aún cifrada: <code>1dad23148a784158944edf21e2ef681a583140fe3d37ce2e35d56fd5c4c85555</code>. Los 13 bloques y sus offsets constan en <code>evidence/dat-framing.json</code>.</p>
+
+<p><strong>Hecho confirmado en ensamblador:</strong> <code>readSettings</code> llama a <code>aseEncode(..., false)</code> en <code>0x11946f</code>, después a <code>dataToSettings</code> en <code>0x11947e</code>. <code>aseEncode</code>, VA <code>0x119a50</code>, llama a <code>EVP_aes_256_ofb</code> en <code>0x119b97</code> y a <code>EVP_DecryptInit_ex</code>, <code>EVP_DecryptUpdate</code> y <code>EVP_DecryptFinal_ex</code> en <code>0x119bae</code>, <code>0x119bcb</code> y <code>0x119be3</code>.</p>
+
+<p><code>dataToSettings</code>, VA <code>0x119770</code>, comienza leyendo una longitud de 32 bits y copiando esa cantidad de bytes a una cadena (<code>0x119791–0x1197ca</code>); continúa con más campos. No se ha asignado significado a todos ellos.</p>
+
+<p><strong>Inferencia sustentada:</strong> el DAT es un contenedor de configuración consumido por el SDK; el código analizado no lo trata como biblioteca ejecutable. <code>1.2.0</code> identifica su formato, mientras que la biblioteca identifica <code>3.4.0</code>.</p>
+
+<p><strong>Pendiente:</strong> significado y orden completos de los campos, selección regional y direcciones de servicios. No se deducen dominios ni credenciales a partir de cadenas aisladas. No se guardó texto descifrado ni se incorporaron constantes criptográficas a la integración.</p>
+
+<h2>4. Controles pendientes: ruta MQTT y serialización</h2>
+
+<p><strong>Hechos de cabecera y ensamblador.</strong> El punto público es <code>fnet_connectionSend</code>, VA <code>0xa0b50</code>, que llama a <code>MqttConn::send</code> en <code>0xa0b54</code>. <code>MqttConn::send</code>, VA <code>0x10ded0</code>, llama al serializador <code>ConnDataProc::writeData2Str</code> en <code>0x10df35</code>. Este despachador, VA <code>0x636f0</code>, admite los tipos del enum hasta <code>0x15</code> inclusive.</p>
+
+<p>En la referencia, <code>ComWanConn.cpp:199–377</code> construye <code>fnet_conn_write_data_t</code> con el tipo, un puntero a la estructura, el topic recibido y QoS <code>1</code>. Los topics proceden de la sesión/dispositivo; no se debe reconstruir su texto por conjetura.</p>
+
+<p>La tabla documenta los nombres literales enlazados desde los serializadores, no una ejecución de los controles. Las coordenadas completas instrucción → cadena se conservaron en <code>evidence/field-refs.txt</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th> Tipo C / valor del enum </th>
+<th> Serializador / VA </th>
+<th> <code>cmd</code> observado </th>
+<th> Claves observadas en argumentos </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>TEMP_CTRL</code> / 4 </td>
+<td> <code>JsonProc::tempCtrl2Obj</code> / <code>0xd8920</code> </td>
+<td> <code>temperatureCtl_cmd</code> (<code>0x15ca1e</code>) </td>
+<td> <code>platform</code>, <code>rightNozzle</code>, <code>leftNozzle</code>, <code>chamber</code>, <code>nozzles</code> </td>
+</tr>
+<tr>
+<td> <code>LIGHT_CTRL</code> / 5 </td>
+<td> <code>JsonProc::lightCtrl2Obj</code> / <code>0xd8e30</code> </td>
+<td> <code>lightControl_cmd</code> (<code>0x15ca58</code>) </td>
+<td> <code>status</code> </td>
+</tr>
+<tr>
+<td> <code>AIR_FILTER_CTRL</code> / 6 </td>
+<td> <code>JsonProc::airFilterCtrl2Obj</code> / <code>0xd8fa0</code> </td>
+<td> <code>circulateCtl_cmd</code> (<code>0x15ca69</code>) </td>
+<td> <code>internal</code>, <code>external</code> </td>
+</tr>
+<tr>
+<td> <code>CLEAR_FAN_CTRL</code> / 7 </td>
+<td> <code>JsonProc::clearFanCtrl2Obj</code> / <code>0xd9190</code> </td>
+<td> <code>clearFan_cmd</code> (<code>0x15ca7a</code>) </td>
+<td> <code>status</code> </td>
+</tr>
+<tr>
+<td> <code>MOVE_CTRL</code> / 8 </td>
+<td> <code>JsonProc::moveCtrl2Obj</code> / <code>0xd9300</code> </td>
+<td> <code>moveCtrl_cmd</code> (<code>0x15ca87</code>) </td>
+<td> <code>axis</code>, <code>delta</code> </td>
+</tr>
+<tr>
+<td> <code>EXTRUDE_CTRL</code> / 9 </td>
+<td> <code>JsonProc::extrudeCtrl2Obj</code> / <code>0xd94f0</code> </td>
+<td> <code>extrudeCtrl_cmd</code> (<code>0x15ca9f</code>) </td>
+<td> <code>axis</code>, <code>delta</code> </td>
+</tr>
+<tr>
+<td> <code>HOMING_CTRL</code> / 10 </td>
+<td> <code>JsonProc::homingCtrl2Obj</code> / <code>0xd96e0</code> </td>
+<td> <code>homingCtrl_cmd</code> (<code>0x15caaf</code>) </td>
+<td> Objeto <code>args</code>; sin estructura de entrada </td>
+</tr>
+<tr>
+<td> <code>MATL_STATION_CTRL</code> / 11 </td>
+<td> <code>JsonProc::matlStationCtrl2Obj</code> / <code>0xd97d0</code> </td>
+<td> <code>ms_cmd</code> (<code>0x15cabe</code>) </td>
+<td> <code>slot</code>, <code>action</code> </td>
+</tr>
+<tr>
+<td> <code>INDEP_MATL_CTRL</code> / 12 </td>
+<td> <code>JsonProc::indepMatlCtrl2Obj</code> / <code>0xd99c0</code> </td>
+<td> <code>ipdMs_cmd</code> (<code>0x15caca</code>) </td>
+<td> <code>action</code> </td>
+</tr>
+<tr>
+<td> <code>PRINT_CTRL</code> / 13 </td>
+<td> <code>JsonProc::printCtrl2Obj</code> / <code>0xd9b30</code> </td>
+<td> <code>printerCtl_cmd</code> (<code>0x15cad4</code>) </td>
+<td> <code>zAxisCompensation</code>, <code>speed</code>, <code>chamberFan</code>, <code>coolingFan</code>, <code>coolingLeftFan</code> </td>
+</tr>
+<tr>
+<td> <code>JOB_CTRL</code> / 14 </td>
+<td> <code>JsonProc::jobCtrl2Obj</code> / <code>0xd9ee0</code> </td>
+<td> <code>jobCtl_cmd</code> (<code>0x15cae9</code>) </td>
+<td> <code>jobID</code>, <code>action</code> </td>
+</tr>
+<tr>
+<td> <code>CAMERA_STREAM_CTRL</code> / 19 </td>
+<td> <code>ConnDataProc::cameraStreamCtrl2Str</code> / <code>0x653c0</code> </td>
+<td> <code>streamCtrl_cmd</code> (<code>0x15a5e3</code>) </td>
+<td> <code>action</code> </td>
+</tr>
+<tr>
+<td> <code>MATL_STATION_CONFIG</code> / 20 </td>
+<td> <code>JsonProc::matlStationConfig2Obj</code> / <code>0xda710</code> </td>
+<td> <code>msConfig_cmd</code> (<code>0x15cb47</code>) </td>
+<td> <code>slot</code>, <code>mt</code>, <code>rgb</code> </td>
+</tr>
+<tr>
+<td> <code>INDEP_MATL_CONFIG</code> / 21 </td>
+<td> <code>JsonProc::indepMatlConfig2Obj</code> / <code>0xda970</code> </td>
+<td> <code>ipdMsConfig_cmd</code> (<code>0x15cb5b</code>) </td>
+<td> <code>mt</code>, <code>rgb</code> </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Los nombres de enum de esta tabla llevan el prefijo <code>FNET_CONN_WRITE_</code> en la cabecera.</p>
+
+<h3>Pausa, reanudación y cancelación</h3>
+
+<p><code>native/FlashNetwork-3.4.0.h:303</code> declara dos punteros: <code>jobId</code> y <code>action</code>; documenta <code>pause</code>, <code>continue</code>, <code>cancel</code>. El serializador referencia <code>jobID</code> en <code>0xd9f24</code>, <code>action</code> en <code>0xd9f97</code> y <code>args</code> en <code>0xda00b</code>. El consumidor <code>ComWanConn::sendJobCtrl</code>, <code>ComWanConn.cpp:299</code>, usa el tipo 14 y QoS 1.</p>
+
+<p><strong>Implicación:</strong> existe contrato para añadir controles de trabajo al auxiliar mediante la API pública. El retorno de envío no demuestra que la impresora haya cambiado de estado; haría falta observar posteriormente su estado. Esta investigación no envió órdenes.</p>
+
+<h3>Temperaturas: diferencias de representación</h3>
+
+<p>En <code>tempCtrl2Obj</code>, los cuatro escalares pasan por <code>round</code> y conversión a entero: <code>0xd8a94/0xd8a99</code>, <code>0xd8b12/0xd8b17</code>, <code>0xd8b98/0xd8b9d</code>, <code>0xd8c1e/0xd8c23</code>. Los elementos de <code>nozzlesTemp</code> se leen como <code>double</code> y se añaden al array (<code>0xd8994–0xd8a07</code>). El array se recorre cuando su puntero es distinto de cero y <code>nozzlesCnt &gt; 0</code> (<code>0xd8953–0xd8963</code>).</p>
+
+<p>Los cuatro escalares se incorporan al objeto; en esa ruta no se observó una condición que los omita por tener valor cero. <strong>No interpretar una estructura inicializada a cero como “no cambiar nada”.</strong> No se ha deducido ningún límite térmico ni un valor centinela universal. El consumidor <code>ComTempCtrl</code>, <code>ComCommand.hpp:382</code>, construye los cuatro campos y añade el vector por separado.</p>
+
+<p>En <code>printCtrl2Obj</code>, <code>zAxisCompensation</code> se conserva como <code>double</code> (<code>0xd9bb3</code>); velocidad y los tres ventiladores pasan por <code>round</code> (<code>0xd9c3c</code>, <code>0xd9cc9</code>, <code>0xd9d49</code>, <code>0xd9dc0</code>). La cabecera documenta mm para compensación Z y porcentajes para velocidad/ventiladores, pero no establece aquí rangos seguros del equipo.</p>
+
+<h3>Materiales y cámara</h3>
+
+<p>La cabecera <code>:286–293</code> documenta <code>action=0</code> para cargar y <code>action=1</code> para descargar. Se conserva el <code>slotId</code> suministrado; las claves <code>slot</code>, <code>mt</code> y <code>rgb</code> no prueban equivalencia con herramientas G-code ni disponibilidad de RFID. La función de cámara documenta <code>open</code>/<code>close</code> (<code>:325</code>), pero no permite deducir el formato del vídeo o la validez de su URL.</p>
+
+<h2>5. Discrepancia de <code>connectionSendMulti</code></h2>
+
+<p><strong>Hecho confirmado en ensamblador.</strong> <code>fnet_connectionSendMulti</code>, VA <code>0xa0bd0</code>, delega en <code>MqttConn::sendMulti</code>, VA <code>0x10e460</code>. Tras comprobar la conexión, esta última exige:</p>
+
+<p><code>text  
+topicCnt &gt; 0  
+y (dataCnt == 1 o dataCnt == topicCnt)  
+</code></p>
+
+<p>Prueba: lectura de <code>topicCnt</code> en offset <code>0x1c</code> y comparación en <code>0x10e4cd–0x10e4d3</code>; lectura de <code>dataCnt</code> en offset <code>0x18</code>, comparación con 1 en <code>0x10e4d9–0x10e4e0</code>, comparación entre ambos contadores en <code>0x10e4f2–0x10e4f4</code>. La rama inválida prepara <code>0xbb9</code>, decimal <strong>3001</strong>, en <code>0x10e63a</code>, correspondiente a <code>FNET_CONN_SEND_ERROR</code>.</p>
+
+<p>El comentario de la cabecera <code>:240–246</code> también permite <code>topicCnt == 1</code> con varios datos. Esa combinación <strong>no pasa esta implementación</strong> cuando <code>dataCnt &gt; 1</code>.</p>
+
+<p>Además, la función construye <code>failedIndices</code> y <code>failedCnt</code> y retorna cero en la ruta normal (<code>0x10e508–0x10e61e</code>). No basta comprobar el retorno: hay que inspeccionar el resultado y liberarlo con <code>fnet_freeWriteMultiResult</code>, VA <code>0xa0d60</code>.</p>
+
+<p><strong>Impacto actual:</strong> <code>src/orca_flashforge/sdk_print.py</code> usa <code>dataCnt=1</code>, <code>topicCnt=1</code> y comprueba <code>failedCnt</code>; esa llamada cumple la restricción observada. La discrepancia afecta a futuras operaciones agrupadas. No se reprodujo mediante llamadas nativas.</p>
+
+<h2>6. Eventos: probable defecto en la rama de descompresión</h2>
+
+<p><code>ConnDataProc::str2ReadData</code>, VA <code>0x65670</code>, consulta <code>eventType</code>; para <code>device_action</code> (<code>0x659b1</code>) lee <code>payload.action_type</code> (<code>0x659c4</code>, <code>0x659da</code>).</p>
+
+<p><strong>Hecho confirmado en ensamblador:</strong></p>
+
+<ol>
+<li><code>0x65a5b</code> carga la cadena de <code>0x15a4c4</code>, <code>job_download</code>. La comparación se llama en <code>0x65a65</code>.</li>
+<li>Si coincide, prepara tipo <code>0x0c</code> y salta a <code>getJobInfo</code>.</li>
+<li>Si no coincide, <code>0x65a73</code> carga <strong>la misma dirección</strong> y <code>0x65a7d</code> llama <strong>al mismo comparador</strong>, con el mismo objeto de cadena.</li>
+<li>Esa segunda rama prepara tipo <code>0x0d</code> en <code>0x65a82</code> y también intenta llamar a <code>getJobInfo</code> en <code>0x65a95</code>.</li>
+</ol>
+
+
+<p>La cabecera <code>:77–78</code> asigna 12 a <code>FNET_CONN_READ_JOB_DOWNLOAD</code> y 13 a <code>FNET_CONN_READ_JOB_UNZIP</code>.</p>
+
+<p><strong>Inferencia:</strong> con una cadena estable y el comparador normal, la segunda comparación no puede pasar después de fallar la primera. La rama de tipo 13 parece inalcanzable por este camino. No se ha probado que no exista otra ruta productora del evento ni se ha ejecutado el parser.</p>
+
+<p><strong>Implicación:</strong> no basar la confirmación de progreso o finalización exclusivamente en <code>JOB_UNZIP</code>. Reproducir después con un mensaje ficticio en un entorno aislado, sin conexión, antes de atribuir un fallo observado a firmware o integración.</p>
+
+<h2>7. Archivos y timelapse: contratos de lectura localizados</h2>
+
+<p>Los siguientes paths fueron leídos en <code>.rodata</code> y enlazados desde llamadas HTTP; no se consultaron. Son paths de esta versión, no URLs completas ni una especificación estable del servicio.</p>
+
+<table>
+<thead>
+<tr>
+<th> Operación </th>
+<th> Función pública / VA </th>
+<th> Referencia comprobada </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Listar G-code </td>
+<td> <code>fnet_getWanDevGcodeList</code> / <code>0x7f4b0</code> </td>
+<td> <code>0x7fbf1</code> referencia <code>0x15b037</code>: <code>/api/v2/external/truck/device/local_files?id=%s</code>; llamada <code>HttpIO::get</code> en <code>0x7fe82</code> </td>
+</tr>
+<tr>
+<td> Listar timelapse </td>
+<td> <code>fnet_getWanDevTimeLapseVideoList</code> / <code>0x802a0</code> </td>
+<td> <code>0x809e1</code> referencia <code>0x15b067</code>: <code>/api/v2/external/truck/device/delay_video/list?id=%s&amp;currentPage=1&amp;pageSize=%d</code>; llamada <code>HttpIO::get</code> en <code>0x80e07</code> </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Ambas firmas reciben <code>clientId</code>, <code>accessToken</code>, <code>devId</code>, punteros de salida y timeout. El listado de vídeos añade <code>maxVideoCnt</code>. El consumidor <code>ComCommand.hpp:224</code> solicita <strong>15</strong> vídeos: es una elección de ese consumidor, no un máximo del SDK o de la impresora. El path fija <code>currentPage=1</code>; la firma no ofrece parámetro de página.</p>
+
+<h3>Datos y liberación</h3>
+
+<ul>
+<li><code>parseWanDevGcodeList</code>, VA <code>0xb5ad0</code>, referencia <code>code</code>, <code>data</code>, <code>file_name</code>, <code>file_obj</code>, <code>url</code>; llama a <code>getWanGcodeDetail</code> en <code>0xb5f96</code>.</li>
+<li><code>getWanGcodeDetail</code>, VA <code>0xc6b80</code>, referencia <code>file_detail</code>, <code>printingTime</code>, <code>totalFilamentWeight</code>, <code>useMatlStation</code>, <code>gcodeToolCnt</code>, <code>gcodeToolDatas</code>. Los identificadores internos se leen con claves <strong><code>toolID</code></strong> (<code>0xc6d6a</code>) y <strong><code>slotID</code></strong> (<code>0xc6db1</code>). No se presupone que sean iguales.</li>
+<li>La salida se declara en <code>FlashNetwork-3.4.0.h:517–533</code>; tiempos en segundos y pesos en gramos según la cabecera. Se libera con <code>fnet_freeGcodeList(array, count)</code>, VA <code>0x6c540</code>.</li>
+<li><code>parseWanDevTimeLapseVideoList</code>, VA <code>0xb6180</code>, referencia <code>data.videos</code>, <code>jobID</code>, <code>filename</code>, <code>videoUrl</code>, <code>thumbnail</code>; llama a <code>getWanTimeLapseVideoResolution</code>, VA <code>0xc70a0</code>, en <code>0xb689d</code>.</li>
+<li>La salida de vídeo contiene <code>jobId</code>, <code>fileName</code>, <code>videoUrl</code>, <code>thumbUrl</code>, <code>width</code>, <code>height</code> (<code>FlashNetwork-3.4.0.h:535</code>). Se libera con <code>fnet_freeTimeLapseVideoList(array, count)</code>, VA <code>0x81220</code>.</li>
+</ul>
+
+
+<p><strong>Próxima extensión recomendada:</strong> integrar primero estas consultas de lectura usando las funciones públicas y el auxiliar existente. Mantener las URLs recibidas en memoria y aplicar las restricciones de host/esquema del proyecto. No deducir que un error, un campo ausente o una primera página vacía describan todo el contenido de la impresora.</p>
+
+<h2>8. ABI y propiedad de memoria</h2>
+
+<p>Clang calculó estos layouts desde la cabecera fijada en el host x86-64, con <code>#pragma pack(push, 8)</code>. No se compiló ni ejecutó un programa de prueba. Salida completa: <code>evidence/abi-layouts.txt</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th> Estructura </th>
+<th> Tamaño / alineación </th>
+<th> Offsets decimales relevantes </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>fnet_conn_write_data</code> </td>
+<td> 32 / 8 </td>
+<td> <code>type=0</code>, <code>data=8</code>, <code>topic=16</code>, <code>qos=24</code> </td>
+</tr>
+<tr>
+<td> <code>fnet_conn_write_multi_data</code> </td>
+<td> 40 / 8 </td>
+<td> <code>datas=8</code>, <code>topics=16</code>, <code>dataCnt=24</code>, <code>topicCnt=28</code>, <code>qos=32</code> </td>
+</tr>
+<tr>
+<td> <code>fnet_conn_write_multi_result</code> </td>
+<td> 16 / 8 </td>
+<td> <code>failedIndices=0</code>, <code>failedCnt=8</code> </td>
+</tr>
+<tr>
+<td> <code>fnet_conn_read_data</code> </td>
+<td> 24 / 8 </td>
+<td> <code>type=0</code>, <code>data=8</code>, <code>topic=16</code> </td>
+</tr>
+<tr>
+<td> <code>fnet_temp_ctrl</code> </td>
+<td> 48 / 8 </td>
+<td> escalares <code>0/8/16/24</code>, <code>nozzlesTemp=32</code>, <code>nozzlesCnt=40</code> </td>
+</tr>
+<tr>
+<td> <code>fnet_job_ctrl</code> </td>
+<td> 16 / 8 </td>
+<td> <code>jobId=0</code>, <code>action=8</code> </td>
+</tr>
+<tr>
+<td> <code>fnet_gcode_tool_data</code> </td>
+<td> 32 / 8 </td>
+<td> <code>toolId=0</code>, <code>slotId=4</code>, cadenas <code>8/16</code>, <code>filemanetWeight=24</code> </td>
+</tr>
+<tr>
+<td> <code>fnet_gcode_data</code> </td>
+<td> 48 / 8 </td>
+<td> cadenas <code>0/8</code>, tiempos/pesos <code>16/24</code>, <code>useMatlStation=32</code>, <code>gcodeToolCnt=36</code>, <code>gcodeToolDatas=40</code> </td>
+</tr>
+<tr>
+<td> <code>fnet_time_lapse_video_data</code> </td>
+<td> 40 / 8 </td>
+<td> cadenas <code>0/8/16/24</code>, <code>width=32</code>, <code>height=36</code> </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Los offsets de contadores de envío múltiple y del vector de temperaturas también aparecen en el ensamblador citado. No se ha contrastado cada campo de todas las estructuras del SDK.</p>
+
+<p>La cabecera del callback de lectura (<code>:93</code>) menciona <code>readData-&gt;devId</code>, pero la estructura real (<code>:674</code>) contiene <strong><code>topic</code></strong>. El consumidor libera <code>event.readData.topic</code> con <code>freeString</code> en <code>MultiComMgr.cpp:1062</code>. Por tanto, para esa propiedad debe seguirse la estructura y el uso real, no el comentario desactualizado.</p>
+
+<p>El callback de renovación exige reservar el nuevo <code>clientId</code> con <code>fnet_allocString</code>; el SDK lo liberará (<code>FlashNetwork-3.4.0.h:89–91</code>, <code>ComWanConn.cpp:388–404</code>). Los callbacks y sus datos asociados deben mantenerse vivos durante la conexión.</p>
+
+<p>El consumidor detiene la conexión, espera su trabajo pendiente y después la libera (<code>ComWanConn.cpp:45–60</code>). Direcciones públicas: <code>fnet_connectionStop=0xa0ad0</code>, <code>fnet_freeConnection=0xa0a30</code>. La integración debe conservar el aislamiento en proceso auxiliar y evitar liberar callbacks mientras puedan ser invocados. No se midieron aquí carreras ni plazos de cierre.</p>
+
+<h2>9. Herramientas y límites de esta sesión</h2>
+
+<p>Se utilizaron GNU binutils 2.47 (<code>readelf</code>, <code>nm</code>, <code>objdump</code>), Clang 23.1.5, Python 3.14.10, <code>file</code>, <code>7z</code> y los scripts de inventario de la skill. No hubo decompilación a C: las conclusiones sobre la biblioteca proceden del ensamblador y sus referencias a datos.</p>
+
+<p>No se expusieron herramientas MCP de REA, Ghidra, IDA o radare2. El detector de la skill no encontró Ghidra, <code>analyzeHeadless</code>, rizin ni radare2. <code>command -v rea ghidra analyzeHeadless java</code> solo encontró Java, en <code>/usr/lib/jvm/java-17-openjdk/bin/java</code>.</p>
+
+<p>Para una continuación con Ghidra/REA faltan un backend Ghidra instalado, un JDK compatible con esa versión y el servidor REA registrado y conectado en el cliente MCP. El detector de la skill señala JDK 21+ para Ghidra 12; actualmente detecta JDK 17. Antes de instalar, comprobar requisitos de las versiones concretas elegidas. No se instalaron herramientas ni se cambió la configuración MCP en esta investigación.</p>
+
+<p>La biblioteca conserva símbolos suficientes para continuar con binutils mientras tanto. Las rutinas prioritarias para decompilar después son <code>ServerSettingRW::dataToSettings</code>, <code>ConnDataProc::str2ReadData</code>, <code>MqttConn::sendMulti</code> y los parsers de detalles y materiales.</p>
+
+<h2>10. Incertidumbres y próximos pasos</h2>
+
+<ol>
+<li><strong>Comportamiento real de eventos:</strong> confirmar con entradas ficticias la rama de <code>JOB_UNZIP</code>. Mantenerlo como probable defecto estático hasta reproducirlo sin red.</li>
+<li><strong>Precondiciones y errores:</strong> elaborar casos simulados para contadores de <code>sendMulti</code>, salidas vacías, errores parciales y liberación. El contrato observado no justifica reintentos automáticos de escrituras.</li>
+<li><strong>DAT:</strong> terminar el esquema de <code>dataToSettings</code> y el uso de cada campo. La reconstrucción del contenedor no valida autenticación, regiones ni configuración remota.</li>
+<li><strong>Lecturas pendientes:</strong> diseñar bindings de listas de G-code y timelapse usando los layouts y frees registrados. Cualquier implementación posterior exige las pruebas y el build indicados por <code>AGENTS.md</code>.</li>
+<li><strong>Capacidades C5 Pro:</strong> correlacionar <code>pid</code>, <code>nozzleCount</code>, estado y materiales con evidencia ya fijada. No inferir RFID, temperaturas máximas o equivalencias entre herramientas y ranuras por presencia de símbolos.</li>
+<li><strong>Sesión y coexistencia:</strong> siguen sin verificarse en esta sesión login, renovación real, reconexión MQTT, convivencia con Flash Maker y respuestas del servidor.</li>
+</ol>
+
+
+<table>
+<thead>
+<tr>
+<th> Tipo de validación </th>
+<th> Realizado en esta investigación </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Análisis estático </td>
+<td> Hashes, ELF, símbolos, funciones seleccionadas, referencias a cadenas, cabeceras y consumidores </td>
+</tr>
+<tr>
+<td> Reconstrucción independiente de formato </td>
+<td> Lectura offline del DAT; comprobación de relleno y carga cifrada, sin ejecutar código del fabricante </td>
+</tr>
+<tr>
+<td> Pruebas simuladas del SDK/integración </td>
+<td> Ninguna nueva; las de <code>docs/analisis.md</code> son antecedentes </td>
+</tr>
+<tr>
+<td> Carga/ejecución nativa del SDK </td>
+<td> Ninguna nueva </td>
+</tr>
+<tr>
+<td> Validación con cuenta/impresora real </td>
+<td> Ninguna </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Apéndice: reproducción local</h2>
+
+<p>Las muestras y salidas grandes están bajo <code>local/sdk-analysis-2026-11-15/</code>, excluido por <code>.gitignore</code>. No se añadieron binarios o DAT a paquetes ni se generaron paquetes.</p>
+
+<p>Desde la raíz del repositorio, estos comandos leen la biblioteca y la cabecera:</p>
+
+<p><code>bash  
+sdk_so='/home/monky/Impresora3D/squashfs-root/bin/libFlashNetwork.so'  
+sdk_dat='/home/monky/Impresora3D/squashfs-root/resources/data/FLASHNETWORK9.DAT'  
+sha256sum "$sdk_so" "$sdk_dat" native/FlashNetwork-3.4.0.h  
+readelf -W -h -l -S -d -n "$sdk_so"  
+nm -D -n -C "$sdk_so"  
+objdump -d -C -Mintel --start-address=0x62a18 --stop-address=0x62a4b "$sdk_so"  
+objdump -d -C -Mintel --start-address=0x65a5b --stop-address=0x65a9f "$sdk_so"  
+objdump -d -C -Mintel --start-address=0x10e4cd --stop-address=0x10e508 "$sdk_so"  
+objdump -d -C -Mintel --start-address=0x119190 --stop-address=0x119c90 "$sdk_so"  
+clang -x c -Xclang -fdump-record-layouts-complete -fsyntax-only native/FlashNetwork-3.4.0.h  
+</code></p>
+
+<p>Para comparar API declarada/exportada, sin cargar la biblioteca:</p>
+
+<p>```python<br/>
+from pathlib import Path<br/>
+import re, subprocess<br/>
+h = Path(&lsquo;native/FlashNetwork-3.4.0.h&rsquo;).read_text()<br/>
+s = subprocess.check_output([&lsquo;nm&rsquo;, &lsquo;-D&rsquo;, &lsquo;&ndash;defined-only&rsquo;,<br/>
+    &lsquo;/home/monky/Impresora3D/squashfs-root/bin/libFlashNetwork.so&rsquo;], text=True)<br/>
+declared = set(re.findall(r'FNET_API\s+[^;]<em>?\b(fnet_\w+)\s</em>(&lsquo;, h))<br/>
+exported = set(re.findall(r&rsquo; T (fnet_\w+)$&lsquo;, s, re.M))<br/>
+print(len(declared), len(exported), declared - exported, exported - declared)</p>
+
+<h1>Resultado observado: 119 119 set() set()</h1>
+
+<p>```</p>
+
+<p>Reconstrucción independiente del contenedor DAT; ejecutar con <code>python3 -I</code>. No descifra ni guarda su contenido:</p>
+
+<p>```python<br/>
+from pathlib import Path<br/>
+import hashlib, random, struct<br/>
+b = Path(&lsquo;/home/monky/Impresora3D/squashfs-root/resources/data/FLASHNETWORK9.DAT&rsquo;).read_bytes()<br/>
+assert b[:20] == b'FNETDAT-1.2.0'.ljust(20, b'\0')<br/>
+seed, length = struct.unpack_from(&lsquo;<QQ', b, 20)
+state = [seed &amp; 0xffffffff]
+for i in range(1, 624):
+    state.append((1812433253 * (state[-1] ^ (state[-1] >> 30)) + i) &amp; 0xffffffff)<br/>
+r = random.Random()<br/>
+r.setstate((3, tuple(state + [624]), None))<br/>
+pos, checked = 36, 0<br/>
+payload = bytearray()<br/>
+while len(payload) &lt; length:<br/>
+    count = r.getrandbits(32) &amp; 255<br/>
+    for _ in range(count):<br/>
+        assert struct.unpack_from(&rsquo;&lt;I', b, pos)[0] == r.getrandbits(32)<br/>
+        pos += 4<br/>
+        checked += 1<br/>
+    size = min(r.getrandbits(32) &amp; 63, length - len(payload))<br/>
+    assert pos + size &lt;= len(b)<br/>
+    payload.extend(b[pos:pos + size])<br/>
+    pos += size<br/>
+assert pos == len(b)<br/>
+print(len(payload), checked, pos, hashlib.sha256(payload).hexdigest())</p>
+
+<h1>314 1783 7482 1dad23148a784158944edf21e2ef681a583140fe3d37ce2e35d56fd5c4c85555</h1>
+
+<p>```</p>
+
+<p>Este lector reproduce la muestra identificada; no es un parser endurecido para DAT arbitrarios ni una propuesta de código para producción.</p>
+</article></main></div><footer>Documento local · Informe completo disponible también en Markdown · Preparado para impresión desde el navegador.</footer><script>(()=>{const nav=document.querySelector('#toc'),heads=[...document.querySelectorAll('article h2,article h3')];for(const h of heads){if(!h.id)h.id='s-'+h.textContent.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');const a=document.createElement('a');a.href='#'+h.id;a.textContent=h.textContent;if(h.tagName==='H3')a.className='sub';nav.append(a)}const bar=document.querySelector('.progress'),links=[...nav.querySelectorAll('a')];addEventListener('scroll',()=>{const d=document.documentElement;bar.style.width=(scrollY/(d.scrollHeight-innerHeight)*100)+'%'});const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting){links.forEach(a=>a.classList.toggle('active',a.hash==='#'+e.target.id))}},{rootMargin:'-12% 0px -78%'});heads.forEach(h=>io.observe(h))})();</script></body></html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Resumen visual del análisis estático de FlashNetwork 3.4.0 y plan para reimplementar la conexión online de máquina en OrcaSlicer.">
+<title>FlashForge · Resumen de análisis y reimplementación</title>
+<style>
+:root{color-scheme:light;--ink:#172522;--muted:#5e7069;--paper:#f3f7f4;--panel:#fff;--line:#dce7df;--green:#126b53;--deep:#102b25;--mint:#e2f4e9;--amber:#d78330;--red:#8e382e;--code:#edf3ef;--shadow:0 16px 46px #102b2010}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:20px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.68 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}.top{height:4px;background:linear-gradient(90deg,#37a77b,#d49a4c)}header{background:var(--deep);color:#eef8f0;padding:40px max(6vw,calc((100vw - 1360px)/2)) 34px;border-bottom:4px solid var(--amber)}header .kicker{text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;font-weight:800;color:#a9d9c4;margin:0 0 8px}header h1{font-size:clamp(2rem,4vw,3.1rem);line-height:1.08;letter-spacing:-.045em;margin:0;max-width:960px}header p.sub{max-width:900px;color:#ccddd3;margin:16px 0 0;font-size:1.05rem}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.chip{border:1px solid #5d7e70;border-radius:999px;padding:4px 11px;color:#ecf7ef;font-size:.78rem}.wrap{max-width:1360px;margin:28px auto;padding:0 25px;display:grid;grid-template-columns:250px minmax(0,1fr);gap:25px}.toc{position:sticky;top:18px;align-self:start;max-height:calc(100vh - 36px);overflow:auto;border:1px solid var(--line);border-radius:15px;background:#fff;padding:16px;box-shadow:var(--shadow)}.toc h2{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}.toc a{display:block;text-decoration:none;color:#476158;font-size:.84rem;line-height:1.35;padding:7px 9px;border-radius:8px}.toc a:hover{background:var(--mint);color:#105c47}.content{min-width:0}.hero-card,.section{background:var(--panel);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow)}.hero-card{padding:25px 28px;margin-bottom:20px}.hero-card h2{margin:0 0 8px;color:#174a38;font-size:1.3rem}.hero-card p{margin:8px 0}.section{padding:clamp(22px,3.5vw,42px);margin:0 0 20px;scroll-margin-top:20px}.section h2{font-size:1.48rem;letter-spacing:-.025em;line-height:1.23;color:#174a38;margin:0 0 16px;padding-bottom:11px;border-bottom:1px solid var(--line)}.section h3{font-size:1.08rem;color:#285744;margin:25px 0 8px}.section p{margin:9px 0}.section ul,.section ol{padding-left:1.28em}.section li{margin:.3em 0;padding-left:.12em}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:17px 0}.card{border:1px solid var(--line);background:#fbfdfb;border-radius:12px;padding:15px 16px}.card h3{margin:0 0 6px;color:#245541;font-size:.98rem}.card p{margin:4px 0;color:#40574e;font-size:.92rem}.tag{display:inline-block;border-radius:999px;font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;margin-bottom:7px}.fact{background:#e1f4e8;color:#176345}.infer{background:#fff1d9;color:#81520c}.open{background:#f8e5e2;color:#883a32}.callout{border-left:4px solid var(--amber);background:#fff8eb;border-radius:0 10px 10px 0;padding:12px 15px;margin:17px 0;color:#604c32}.callout.good{border-color:var(--green);background:var(--mint);color:#204d3a}.callout.warn{border-color:#b45143;background:#fff0ed;color:#6e302a}table{border-collapse:collapse;width:100%;margin:13px 0 19px;font-size:.9rem;line-height:1.5;border:1px solid var(--line);border-radius:10px;overflow:hidden}th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}th{background:#edf5ef;color:#244b3a;font-size:.82rem}tbody tr:nth-child(even){background:#f8faf8}tbody tr:last-child td{border-bottom:0}code{font: .87em/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--code);padding:.13em .34em;border-radius:5px;color:#174d3c;overflow-wrap:anywhere}.mono{font: .84rem/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;background:#f2f6f3;border:1px solid var(--line);padding:12px 14px;border-radius:10px;overflow-wrap:anywhere}.domain{display:inline-block;background:#edf6f0;border:1px solid #d9e9dd;color:#16523c;font: .86rem ui-monospace,monospace;padding:5px 9px;border-radius:7px;margin:4px 4px 4px 0}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:17px 0}.step{border:1px solid var(--line);border-radius:10px;background:#f8fbf9;padding:12px}.step b{display:block;color:#176047;font-size:.82rem;margin-bottom:5px}.step span{font-size:.82rem;color:#52665d}.small{font-size:.84rem;color:var(--muted)}a{color:#08765b}footer{max-width:1360px;margin:0 auto;padding:0 25px 35px;color:var(--muted);font-size:.82rem}@media(max-width:900px){.wrap{grid-template-columns:1fr}.toc{position:static;max-height:none}.toc nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr))}.grid{grid-template-columns:1fr}.flow{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){header{padding:30px 20px}.wrap{padding:0 12px;margin-top:14px}.section,.hero-card{padding:20px}.flow{grid-template-columns:1fr}table{font-size:.81rem}th,td{padding:8px}}@media print{body{background:#fff;font-size:10pt}.wrap{display:block;margin:0;padding:0;max-width:none}.toc{display:none}.section,.hero-card{box-shadow:none;break-inside:avoid}.section{border:0;padding:12px 0}.grid{grid-template-columns:repeat(2,1fr)}header{padding:20px;background:#102b25!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}footer{padding:0}}
+</style>
+</head>
+<body>
+<div class="top"></div>
+<header>
+  <p class="kicker">OrcaFlashForge · resumen técnico</p>
+  <h1>FlashForge online en OrcaSlicer original</h1>
+  <p class="sub">Hallazgos de ingeniería inversa de FlashNetwork 3.4.0 y estado del plan para reemplazar el SDK en la conexión de máquina.</p>
+  <div class="chips"><span class="chip">FlashNetwork 3.4.0</span><span class="chip">Creator 5 Pro</span><span class="chip">Análisis estático</span><span class="chip">Sin validación con impresora real</span></div>
+</header>
+<div class="wrap">
+<aside class="toc"><h2>Contenido</h2><nav>
+<a href="#estado">Resumen</a><a href="#muestras">Muestras</a><a href="#hallazgos">Ingeniería inversa</a><a href="#dat">DAT y dominios</a><a href="#mqtt">MQTT y ABI</a><a href="#faltante">Pendientes</a><a href="#distribucion">Python en OrcaSlicer</a><a href="#plan">Plan</a><a href="#legal">Legal y validación</a>
+</nav></aside>
+<main class="content">
+<section class="hero-card" id="estado"><h2>Estado en una frase</h2><p>Se conoce parte del contrato nativo, pero aún no lo suficiente para reemplazar el SDK completo. La dirección acordada es reimplementar en Python dentro del plugin OrcaSlicer, usando el runtime que acompaña a Orca en Windows y Flatpak, sin instalar dependencias aparte.</p><div class="callout warn"><strong>La reimplementación no está hecha.</strong> El backend actual todavía usa <code>libFlashNetwork.so</code> y <code>FLASHNETWORK9.DAT</code>; además, <code>bridge.py</code> lanza <code>/usr/bin/python3</code>.</div></section>
+
+<section class="section" id="muestras"><h2>Muestras y procedencia</h2><table><thead><tr><th>Artefacto</th><th>Hecho observado</th></tr></thead><tbody>
+<tr><td><code>libFlashNetwork.so</code></td><td>ELF64 x86-64, 2.040.800 bytes; SHA-256 <code>7c7afb73c4f27fe34a243404e9536ccb3ad67877eeebfa9674ea6183431d68a6</code>; Build ID <code>98819a919765829d7d4b4ee2186eab90cdee606d</code>.</td></tr>
+<tr><td><code>FLASHNETWORK9.DAT</code></td><td>7.482 bytes; SHA-256 <code>889d2f9a3bb1801b37a1d2a13e8914aa9d9fe1b1fb5de34bb2a684c0fb3d88ce</code>.</td></tr>
+<tr><td>Cabecera</td><td><code>native/FlashNetwork-3.4.0.h</code>, igual a la cabecera del consumidor fijado; SHA-256 <code>812671c84b57a69190c81f5c5966b35dfee516cbf4c95f042d6e457678e25174</code>.</td></tr>
+<tr><td>Referencia</td><td>Orca-Flashforge <code>develop</code> en <code>ea9a451f89d2be656df0445388d6237319db91d4</code>, consumidor de FlashNetwork 3.4.0.</td></tr>
+</tbody></table><p class="small">Las muestras se extrajeron del AppImage de Flash Studio sin ejecutar. No se incluyen binarios ni DAT en paquetes.</p></section>
+
+<section class="section" id="hallazgos"><h2>Hallazgos de ingeniería inversa</h2>
+<div class="grid">
+<div class="card"><span class="tag fact">Hecho</span><h3>Versión y símbolos</h3><p>La versión 3.4.0 se construye en <code>fnet_getVersion</code>, VA <code>0x6abf0</code>. La biblioteca exporta 119 funciones C y la cabecera declara exactamente esas 119.</p></div>
+<div class="card"><span class="tag fact">Hecho</span><h3>Escrituras MQTT</h3><p><code>fnet_connectionSend</code> (<code>0xa0b50</code>) usa <code>MqttConn::send</code> (<code>0x10ded0</code>) y el serializador <code>writeData2Str</code> (<code>0x10df35</code>).</p></div>
+<div class="card"><span class="tag fact">Hecho</span><h3>sendMulti</h3><p>La implementación requiere <code>dataCnt == 1</code> o <code>dataCnt == topicCnt</code>. El comentario de cabecera permite más combinaciones. Hay que revisar <code>failedCnt</code>, aunque el retorno sea cero.</p></div>
+<div class="card"><span class="tag infer">Inferencia</span><h3>Evento de descarga</h3><p>El parser compara dos veces <code>job_download</code> para tipos 12 y 13. La rama de tipo 13 parece inalcanzable; falta confirmar con un mensaje sintético.</p></div>
+</div>
+<h3>Controles encontrados</h3><p>Los serializadores contienen comandos para temperatura, luz, ventiladores, movimiento, homing, materiales, trabajo, cámara y configuración de materiales. Ejemplos documentados en cabecera: trabajo <code>pause</code>/<code>continue</code>/<code>cancel</code>; cámara <code>open</code>/<code>close</code>. Esto describe formato, no valida soporte físico en Creator 5 Pro.</p>
+<h3>Consultas HTTP localizadas</h3><table><thead><tr><th>Función</th><th>VA</th><th>Ruta observada</th></tr></thead><tbody><tr><td><code>fnet_getWanDevGcodeList</code></td><td><code>0x7f4b0</code></td><td><code>/api/v2/external/truck/device/local_files?id=%s</code></td></tr><tr><td><code>fnet_getWanDevTimeLapseVideoList</code></td><td><code>0x802a0</code></td><td><code>/api/v2/external/truck/device/delay_video/list?id=%s&amp;currentPage=1&amp;pageSize=%d</code></td></tr></tbody></table><p class="small">Las rutas no revelan por sí solas host, autenticación completa ni un contrato estable. No se llamaron.</p>
+</section>
+
+<section class="section" id="dat"><h2>DAT y dominios observados</h2>
+<div class="grid"><div class="card"><span class="tag fact">Hecho</span><h3>Formato</h3><p>Encabezado <code>FNETDAT-1.2.0</code>. Se reconstruyeron 314 bytes de carga al verificar 1.783 enteros de relleno MT19937. El lector de la biblioteca llama a AES-256-OFB.</p></div><div class="card"><span class="tag open">Pendiente</span><h3>Significado</h3><p>El esquema completo y la relación de cada servicio con operaciones concretas aún no están trazados. No se guardó la configuración descifrada ni se exponen claves.</p></div></div>
+<p>Una comprobación estática posterior descifró la carga solo en memoria y filtró hostnames:</p>
+<div><span class="domain">api.fdmcloud.flashforge.com</span><span class="domain">api.voxelshare.com</span><span class="domain">auth.voxelshare.com</span><span class="domain">report.voxelshare.com</span><span class="domain">desktop.voxelshare.com</span><span class="domain">:8083/mqtt</span></div>
+<div class="callout"><strong>Precaución:</strong> son valores de configuración observados. No prueban qué función usa cada host, si siguen activos o a qué host pertenece el fragmento MQTT. <code>auth.voxelshare.com</code> faltó en la primera lista y queda corregido aquí.</div>
+<p>El usuario quiere excluir la plataforma Voxelshare. <code>api.fdmcloud.flashforge.com</code> es candidato a servicio de máquina, pero aún debe confirmarse siguiendo referencias desde las funciones del SDK.</p>
+</section>
+
+<section class="section" id="mqtt"><h2>ABI, memoria y materiales</h2><ul>
+<li>La documentación registra layouts y funciones de liberación para estructuras principales; las mediciones corresponden al host x86-64.</li>
+<li>El consumidor usa topic recibido y QoS 1; no inventar topics desde IDs.</li>
+<li>La estructura real de evento contiene <code>topic</code>, aunque un comentario antiguo dice <code>devId</code>.</li>
+<li><code>toolId</code> y <code>slotId</code> son campos separados. No asumir equivalencia entre herramienta G-code y ranura.</li>
+<li>La ruta de envío del informe distingue subida, creación del trabajo y despacho MQTT. Despachar no prueba que la impresora haya empezado.</li>
+</ul><p class="small">El informe completo contiene símbolos, VA, offsets, claves serializadas, tamaños, offsets de campos y comandos reproducibles.</p></section>
+
+<section class="section" id="faltante"><h2>Qué falta para reemplazar el SDK</h2><div class="grid">
+<div class="card"><span class="tag open">Cuenta</span><p>Rutas y cuerpos de login/renovación; respuesta y pasos exactos requeridos para autorizar operaciones de máquina.</p></div>
+<div class="card"><span class="tag open">Servicios</span><p>Asignar hosts a operaciones y confirmar si se puede excluir Voxelshare sin romper acceso a máquina.</p></div>
+<div class="card"><span class="tag open">MQTT</span><p>Broker, puerto/TLS, autenticación, topics, suscripciones, reconexión y contratos de eventos.</p></div>
+<div class="card"><span class="tag open">Creator 5 Pro</span><p>Capacidades, estados, ranuras/materiales y confirmaciones físicas observables.</p></div>
+</div><p>No se incorporarán secretos de aplicación del fabricante ni se eludirá autenticación. Si el servicio exige credenciales no disponibles para clientes independientes, se registrará como bloqueo.</p></section>
+
+<section class="section" id="distribucion"><h2>Python incluido en OrcaSlicer</h2><p>OrcaSlicer fija plugins <code>.py</code>/<code>.whl</code> y empaqueta Python según el formato. Para el objetivo del proyecto:</p>
+<table><thead><tr><th>Paquete</th><th>Runtime señalado por el código fijado</th></tr></thead><tbody><tr><td>Instalador Windows</td><td><code>&lt;directorio de OrcaSlicer&gt;\python\python.exe</code></td></tr><tr><td>Flatpak 2.5.1</td><td>CPython 3.12.13 en <code>/app/libpython</code></td></tr><tr><td>AppImage</td><td>Runtime en el árbol empaquetado</td></tr><tr><td>FHS simple</td><td>Puede no incluir runtime</td></tr></tbody></table>
+<div class="callout good">Objetivo acordado: plugin Python que use el Python incluido por OrcaSlicer en Windows y Flatpak. El usuario no instala Python ni paquetes aparte.</div>
+<p>El código actual no cumple aún este requisito: <code>bridge.py</code> usa <code>/usr/bin/python3</code>. Hay que localizar el Python de Orca sin fallback silencioso al Python del sistema. Las dependencias serán estándar o viajarán en el wheel con licencia y procedencia documentadas.</p>
+</section>
+
+<section class="section" id="plan"><h2>Plan resumido</h2><div class="flow">
+<div class="step"><b>1 · Evidencia</b><span>Trazar rutas, hosts, autenticación y MQTT; registrar VA/offset y confianza.</span></div>
+<div class="step"><b>2 · Transporte</b><span>Modelos neutrales y HTTP/MQTT sustituibles, sin SDK ni DAT.</span></div>
+<div class="step"><b>3 · Lecturas</b><span>Autorización necesaria, lista y estado; todo con dobles locales.</span></div>
+<div class="step"><b>4 · Eventos</b><span>Añadir MQTT, cámara y controles solo cuando estén demostrados.</span></div>
+<div class="step"><b>5 · Trabajos</b><span>Subida, creación y despacho como fases distintas.</span></div>
+<div class="step"><b>6 · Migración</b><span>Usar Python incluido; retirar SDK/DAT y revisar paquete.</span></div>
+<div class="step"><b>7 · Validación</b><span>Windows/Flatpak; login/lectura primero, acciones físicas nunca automáticas.</span></div>
+<div class="step"><b>Gate</b><span>No implementar contratos con host, ruta o campos supuestos.</span></div>
+</div><p>Detalle en <code>docs/roadmap.md</code>, hito 6.</p></section>
+
+<section class="section" id="legal"><h2>Legalidad y nivel de validación</h2><p>La conversación revisó que la Directiva europea 2009/24/CE permite, bajo condiciones, descompilar lo imprescindible para interoperabilidad de un programa independiente. No es permiso general ni determina por sí sola la legalidad de este caso. El EULA publicado restringe análisis y redistribución; su interacción con la excepción exige asesoramiento jurídico. El plan no incluye redistribuir los binarios originales.</p><p><a href="https://eu.flashforge.com/es/pages/terms-of-service">EULA publicado por FlashForge</a> · <a href="https://eur-lex.europa.eu/legal-content/ES/TXT/?uri=CELEX:32009L0024">Directiva 2009/24/CE, artículo 6</a>.</p>
+<table><thead><tr><th>Tipo</th><th>Estado</th></tr></thead><tbody><tr><td>Análisis estático</td><td>Hecho para ELF, símbolos, DAT, contratos seleccionados y ABI.</td></tr><tr><td>Simulación</td><td>Hay pruebas previas con SDK falso; no prueban nube ni hardware.</td></tr><tr><td>Cuenta/impresora real</td><td>No validado en este análisis.</td></tr></tbody></table>
+<p class="small">Informe técnico detallado: <code>docs/sdk-flashnetwork-3.4.0-analisis-estatico.md</code>. Resumen fuente: <code>docs/resumen-reimplementacion-flashforge.md</code>.</p></section>
+</main></div>
+<footer>OrcaFlashForge · Resumen actualizado 2026-11-16 · No incluye binarios ni DAT del fabricante.</footer>
+</body></html>
